@@ -1,0 +1,54 @@
+object dm: Tdm
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 395
+  Width = 621
+  object fd: TFDConnection
+    Params.Strings = (
+      'Database=pdv'
+      'User_Name=root'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 32
+    Top = 24
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    Left = 528
+    Top = 24
+  end
+  object tb_Cargos: TFDTable
+    IndexFieldNames = 'id'
+    Connection = fd
+    UpdateOptions.UpdateTableName = 'pdv.cargos'
+    TableName = 'pdv.cargos'
+    Left = 40
+    Top = 104
+  end
+  object query_cargos: TFDQuery
+    Connection = fd
+    SQL.Strings = (
+      'select * from cargos')
+    Left = 40
+    Top = 168
+    object query_cargosid: TFDAutoIncField
+      DisplayLabel = 'ID'
+      DisplayWidth = 7
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+    end
+    object query_cargoscargo: TStringField
+      DisplayLabel = 'Cargo'
+      DisplayWidth = 20
+      FieldName = 'cargo'
+      Origin = 'cargo'
+      Required = True
+      Size = 25
+    end
+  end
+  object DSCargos: TDataSource
+    DataSet = query_cargos
+    Left = 104
+    Top = 168
+  end
+end

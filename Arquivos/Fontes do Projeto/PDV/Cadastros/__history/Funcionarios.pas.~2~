@@ -1,0 +1,45 @@
+unit Funcionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Buttons, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Mask;
+
+type
+  TFrmFuncionarios = class(TForm)
+    EdtBuscarNome: TEdit;
+    rbNome: TRadioButton;
+    rbCPF: TRadioButton;
+    EdtBuscarCPF: TMaskEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    EdtNome: TEdit;
+    Label3: TLabel;
+    EdtCPF: TMaskEdit;
+    Label4: TLabel;
+    EdtTel: TMaskEdit;
+    Label5: TLabel;
+    EdtEndereco: TEdit;
+    Label6: TLabel;
+    cbCargo: TComboBox;
+    DBGrid1: TDBGrid;
+    btnNovo: TSpeedButton;
+    btnSalvar: TSpeedButton;
+    BtnEditar: TSpeedButton;
+    BtnExcluir: TSpeedButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmFuncionarios: TFrmFuncionarios;
+
+implementation
+
+{$R *.dfm}
+
+end.

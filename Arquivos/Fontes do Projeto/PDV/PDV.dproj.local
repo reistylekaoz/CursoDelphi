@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2019/06/24 11:52:32.714,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 11:53:17.775,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Login.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 11:53:17.775,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Login.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 11:53:27.567,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\PDV.dproj=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019/06/24 14:25:28.747,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 14:25:44.542,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Menu.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 14:25:44.542,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Menu.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 14:54:58.242,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 14:55:08.021,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Usuarios.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 14:55:08.021,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Usuarios.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 15:11:38.943,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\ModelSupport_PDV\default.txaPackage</Transaction>
+    <Transaction>2019/06/24 15:12:09.828,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\ModelSupport_PDV\default.txvpck</Transaction>
+    <Transaction>2019/06/24 15:17:54.246,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Usuarios.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Usuarios.dfm</Transaction>
+    <Transaction>2019/06/24 15:17:54.246,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Usuarios.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Usuarios.pas</Transaction>
+    <Transaction>2019/06/24 15:18:07.486,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\ModelSupport_PDV\PDV\default.txvpck</Transaction>
+    <Transaction>2019/06/24 15:18:49.390,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 15:19:01.152,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Funcionarios.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 15:19:01.152,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Funcionarios.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 16:05:04.122,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 16:05:12.516,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Cargos.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 16:05:12.516,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Cargos.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 16:15:30.412,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/24 16:15:57.053,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Modulo.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/24 16:15:57.053,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Modulo.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/25 19:33:30.401,=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+    <Transaction>2019/06/25 19:33:56.796,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Fornecedores.dfm=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.dfm</Transaction>
+    <Transaction>2019/06/25 19:33:56.796,C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Cadastros\Fornecedores.pas=C:\Users\hugov\Documents\Embarcadero\Studio\Projects\PDV\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
