@@ -14,6 +14,7 @@ object FrmLogin: TFrmLogin
   OldCreateOrder = False
   WindowState = wsMaximized
   OnCanResize = FormCanResize
+  OnKeyUp = FormKeyUp
   PixelsPerInch = 96
   TextHeight = 13
   object PanelLogin: TPanel
@@ -23,8 +24,6 @@ object FrmLogin: TFrmLogin
     Height = 494
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 753
-    ExplicitHeight = 49
     object ImgLoginFundo: TImage
       Left = 1
       Top = 1
@@ -6560,13 +6559,34 @@ object FrmLogin: TFrmLogin
         ExplicitWidth = 105
         ExplicitHeight = 105
       end
-      object BtnLogin: TButton
-        Left = 32
-        Top = 212
-        Width = 283
-        Height = 45
-        Caption = 'Login'
-        TabOrder = 0
+      object BtnLogin: TSpeedButton
+        Left = 34
+        Top = 209
+        Width = 281
+        Height = 48
+        Cursor = crHandPoint
+        Caption = 'LOGIN'
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -21
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = BtnLoginClick
+      end
+      object LblAvisoLogin: TLabel
+        Left = 210
+        Top = 263
+        Width = 103
+        Height = 14
+        Alignment = taRightJustify
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
       end
       object EdtSenha: TEdit
         Left = 64
@@ -6581,7 +6601,7 @@ object FrmLogin: TFrmLogin
         Font.Style = []
         ParentFont = False
         PasswordChar = '*'
-        TabOrder = 1
+        TabOrder = 0
       end
       object EdtLogin: TEdit
         Left = 64
@@ -6595,7 +6615,7 @@ object FrmLogin: TFrmLogin
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
       end
     end
   end

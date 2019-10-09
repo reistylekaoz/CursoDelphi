@@ -1,0 +1,9 @@
+object DMod: TDMod
+  OldCreateOrder = False
+  Height = 678
+  Width = 861
+  object FDCon: TFDConnection
+    Left = 72
+    Top = 56
+  end
+end
