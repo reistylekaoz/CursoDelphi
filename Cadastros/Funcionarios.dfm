@@ -13,6 +13,7 @@ object FrmFuncionarios: TFrmFuncionarios
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label7: TLabel
@@ -28,7 +29,7 @@ object FrmFuncionarios: TFrmFuncionarios
     Top = 0
     Width = 540
     Height = 284
-    ActivePage = tbCadastro
+    ActivePage = TbConsulta
     Align = alClient
     TabOrder = 0
     object TbConsulta: TTabSheet
@@ -134,8 +135,9 @@ object FrmFuncionarios: TFrmFuncionarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
+        OnClick = BtnNovoClick
       end
-      object SpeedButton1: TSpeedButton
+      object btnAlterar: TSpeedButton
         Left = 372
         Top = 191
         Width = 73
@@ -223,6 +225,7 @@ object FrmFuncionarios: TFrmFuncionarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
+        OnClick = btnAlterarClick
       end
       object BtnDeletar: TSpeedButton
         Left = 451
@@ -465,6 +468,7 @@ object FrmFuncionarios: TFrmFuncionarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
+        OnClick = BtnSalvarClick
       end
       object btnCancelar: TSpeedButton
         Left = 341
@@ -602,7 +606,9 @@ object FrmFuncionarios: TFrmFuncionarios
         Top = 163
         Width = 415
         Height = 21
+        Style = csDropDownList
         TabOrder = 4
+        OnChange = cmbCargoChange
       end
       object edtID: TEdit
         Left = 78
@@ -611,6 +617,15 @@ object FrmFuncionarios: TFrmFuncionarios
         Height = 21
         Enabled = False
         TabOrder = 5
+      end
+      object cmbIDcargo: TComboBox
+        Left = 78
+        Top = 190
+        Width = 35
+        Height = 21
+        Enabled = False
+        TabOrder = 6
+        Visible = False
       end
     end
   end

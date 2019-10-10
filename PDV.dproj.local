@@ -2,25 +2,25 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019/10/08 19:10:57.000.956,=\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 19:12:08.000.686,D:\WS\CursoDelphi\Login.pas=\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 19:12:08.000.686,D:\WS\CursoDelphi\Login.dfm=\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
-    <Transaction>2019/10/08 19:12:15.000.836,D:\WS\CursoDelphi\PDV.dproj=\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019/10/08 19:12:08.000.686,\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\WS\CursoDelphi\Login.dfm</Transaction>
+    <Transaction>2019/10/08 19:12:08.000.686,\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\WS\CursoDelphi\Login.pas</Transaction>
+    <Transaction>2019/10/08 19:12:15.000.836,\\srv-dc01\Usuarios\Murilo\My Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\WS\CursoDelphi\PDV.dproj</Transaction>
     <Transaction>2019/10/08 22:17:29.000.335,=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 22:17:43.000.887,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Menu.pas</Transaction>
-    <Transaction>2019/10/08 22:17:43.000.887,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Menu.dfm</Transaction>
+    <Transaction>2019/10/08 22:17:43.000.887,D:\Projeto\WS\CursoDelphi\CursoDelphi\Menu.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
+    <Transaction>2019/10/08 22:17:43.000.887,D:\Projeto\WS\CursoDelphi\CursoDelphi\Menu.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
     <Transaction>2019/10/08 22:35:17.000.537,=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 22:35:25.000.861,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.pas</Transaction>
-    <Transaction>2019/10/08 22:35:25.000.861,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.dfm</Transaction>
-    <Transaction>2019/10/08 22:41:07.000.504,D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Usuarios.dfm</Transaction>
-    <Transaction>2019/10/08 22:41:07.000.504,D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Usuarios.pas</Transaction>
+    <Transaction>2019/10/08 22:35:25.000.861,D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
+    <Transaction>2019/10/08 22:35:25.000.861,D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
+    <Transaction>2019/10/08 22:41:07.000.504,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Usuarios.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.pas</Transaction>
+    <Transaction>2019/10/08 22:41:07.000.504,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Usuarios.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Usuarios.dfm</Transaction>
     <Transaction>2019/10/08 22:41:35.000.912,=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 22:41:57.000.809,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Funcionarios.dfm</Transaction>
-    <Transaction>2019/10/08 22:41:57.000.809,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Funcionarios.pas</Transaction>
+    <Transaction>2019/10/08 22:41:57.000.809,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Funcionarios.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
+    <Transaction>2019/10/08 22:41:57.000.809,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Funcionarios.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
     <Transaction>2019/10/08 23:10:38.000.762,=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 23:10:54.000.358,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Cargos.pas</Transaction>
-    <Transaction>2019/10/08 23:10:54.000.358,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Cargos.dfm</Transaction>
+    <Transaction>2019/10/08 23:10:54.000.358,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Cargos.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
+    <Transaction>2019/10/08 23:10:54.000.358,D:\Projeto\WS\CursoDelphi\CursoDelphi\Cadastros\Cargos.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
     <Transaction>2019/10/08 23:21:48.000.687,=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/08 23:22:20.000.455,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\dmodule.dfm</Transaction>
-    <Transaction>2019/10/08 23:22:20.000.455,D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\dmodule.pas</Transaction>
+    <Transaction>2019/10/08 23:22:20.000.455,D:\Projeto\WS\CursoDelphi\CursoDelphi\dmodule.pas=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
+    <Transaction>2019/10/08 23:22:20.000.455,D:\Projeto\WS\CursoDelphi\CursoDelphi\dmodule.dfm=D:\Projeto\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
   </Transactions>
 </BorlandProject>

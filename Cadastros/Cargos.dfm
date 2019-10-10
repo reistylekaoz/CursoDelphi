@@ -29,8 +29,6 @@ object FrmCargos: TFrmCargos
     OnEnter = PageControl1Enter
     object TbConsulta: TTabSheet
       Caption = 'Consulta'
-      ExplicitLeft = -100
-      ExplicitTop = 28
       object Label1: TLabel
         Left = 3
         Top = 21
@@ -572,7 +570,7 @@ object FrmCargos: TFrmCargos
   end
   object DS: TDataSource
     DataSet = DMod.QRcon
-    Left = 500
-    Top = 32
+    Left = 516
+    Top = 24
   end
 end
