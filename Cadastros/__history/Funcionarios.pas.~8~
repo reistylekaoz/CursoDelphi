@@ -1,0 +1,104 @@
+unit Funcionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.Grids,
+  Vcl.ComCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids;
+
+type
+  TFrmFuncionarios = class(TForm)
+    PageControl1: TPageControl;
+    TbConsulta: TTabSheet;
+    Label1: TLabel;
+    edtPesquisa: TEdit;
+    tbCadastro: TTabSheet;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    edtNome: TEdit;
+    edtEnd: TEdit;
+    edtCpf: TMaskEdit;
+    edtFone: TMaskEdit;
+    cmbCargo: TComboBox;
+    BtnNovo: TSpeedButton;
+    SpeedButton1: TSpeedButton;
+    BtnSalvar: TSpeedButton;
+    BtnDeletar: TSpeedButton;
+    btnCancelar: TSpeedButton;
+    grid: TDBGrid;
+    DS: TDataSource;
+    Label7: TLabel;
+    Label8: TLabel;
+    edtID: TEdit;
+     PROCEDUre salvar;
+    procedure alterar;
+    procedure pesquisar;
+    procedure delete(id: String);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmFuncionarios: TFrmFuncionarios;
+  CRUD: String;
+
+implementation
+
+{$R *.dfm}
+
+uses dmodule;
+
+{ TFrmFuncionarios }
+
+procedure TFrmFuncionarios.alterar;
+begin
+//n
+
+end;
+
+procedure TFrmFuncionarios.delete(id: String);
+begin
+//n
+end;
+
+procedure TFrmFuncionarios.pesquisar;
+begin
+   //n
+end;
+
+procedure TFrmFuncionarios.salvar;
+begin
+if crud = 'C' then
+
+  begin
+    // Inserção do registro na tabela
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('INSERT INTO CARGOS (NOME) VALUES (:NOME);');
+    DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+    DMod.QRcon.ExecSQL;
+
+    // Consulta o ID gerado na tabela e repassa para o edt de ID
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('select id from cargos where id = (select max(id) from cargos)');
+    DMod.QRcon.Open;
+    edtId.Text := DMod.QRcon.FieldByName('ID').Value;
+
+    DMod.QRcon.SQL.Clear;
+    crud := 'R';
+    MessageDlg('Salvo com sucesso', mtInformation, mbOKCancel, 0);
+  end
+  else if crud = 'U' then
+
+  begin
+    alterar;
+  end;
+end;
+
+end.

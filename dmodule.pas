@@ -13,13 +13,8 @@ uses
 type
   TDMod = class(TDataModule)
     FDCon: TFDConnection;
-    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
-    tbCargos: TFDTable;
-    tbCargosID: TIntegerField;
-    tbCargosNOME: TStringField;
-    QRcargos: TFDQuery;
-    QRcargosID: TIntegerField;
-    QRcargosNOME: TStringField;
+    TBcon: TFDTable;
+    QRcon: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

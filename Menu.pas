@@ -40,19 +40,19 @@ uses Usuarios, Funcionarios, Cargos;
 procedure TFrmMenu.Cargos1Click(Sender: TObject);
 begin
     FrmCargos := TFrmCargos.Create(self);
-    FrmCargos.Show;
+    FrmCargos.ShowModal;
 end;
 
 procedure TFrmMenu.Funcionarios1Click(Sender: TObject);
 begin
     FrmFuncionarios := TFrmFuncionarios.Create(self);
-    FrmFuncionarios.Show;
+    FrmFuncionarios.ShowModal;
 end;
 
 procedure TFrmMenu.Usuarios1Click(Sender: TObject);
 begin
     FrmUsuarios := TFrmUsuarios.Create(self);
-    FrmUsuarios.Show;
+    FrmUsuarios.ShowModal;
 end;
 
 end.
