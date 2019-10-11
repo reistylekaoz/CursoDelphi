@@ -38,9 +38,9 @@ type
     procedure edtPesquisaKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure GridDblClick(Sender: TObject);
-    procedure PageControl1Enter(Sender: TObject);
     procedure BtnDeletarClick(Sender: TObject);
     procedure BtnCancelarClick(Sender: TObject);
+    procedure TbConsultaShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -139,12 +139,6 @@ begin
   BtnAlterar.Click;
 end;
 
-procedure TFrmCargos.PageControl1Enter(Sender: TObject);
-begin
-  edtPesquisa.SetFocus;
-  pesquisar;
-end;
-
 procedure TFrmCargos.pesquisar;
 begin
 
@@ -187,6 +181,12 @@ begin
     alterar;
   end;
 
+end;
+
+procedure TFrmCargos.TbConsultaShow(Sender: TObject);
+begin
+  edtPesquisa.SetFocus;
+  pesquisar;
 end;
 
 procedure TFrmCargos.BtnAlterarClick(Sender: TObject);

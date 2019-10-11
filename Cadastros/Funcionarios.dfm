@@ -12,6 +12,7 @@ object FrmFuncionarios: TFrmFuncionarios
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnShow = FormShow
   PixelsPerInch = 96
@@ -29,11 +30,12 @@ object FrmFuncionarios: TFrmFuncionarios
     Top = 0
     Width = 540
     Height = 284
-    ActivePage = TbConsulta
+    ActivePage = tbCadastro
     Align = alClient
     TabOrder = 0
     object TbConsulta: TTabSheet
       Caption = 'Consulta'
+      OnShow = TbConsultaShow
       object Label1: TLabel
         Left = 3
         Top = 21
@@ -315,13 +317,16 @@ object FrmFuncionarios: TFrmFuncionarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
+        OnClick = BtnDeletarClick
       end
       object edtPesquisa: TEdit
         Left = 3
         Top = 46
         Width = 521
         Height = 21
+        CharCase = ecUpperCase
         TabOrder = 0
+        OnKeyUp = edtPesquisaKeyUp
       end
       object grid: TDBGrid
         Left = 3
@@ -335,6 +340,31 @@ object FrmFuncionarios: TFrmFuncionarios
         TitleFont.Height = -11
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
+        OnDblClick = gridDblClick
+        Columns = <
+          item
+            Expanded = False
+            Title.Caption = 'ID'
+            Visible = True
+          end
+          item
+            Expanded = False
+            Title.Caption = 'NOME'
+            Width = 149
+            Visible = True
+          end
+          item
+            Expanded = False
+            Title.Caption = 'TELEFONE'
+            Width = 106
+            Visible = True
+          end
+          item
+            Expanded = False
+            Title.Caption = 'CARGO'
+            Width = 116
+            Visible = True
+          end>
       end
     end
     object tbCadastro: TTabSheet
@@ -558,6 +588,7 @@ object FrmFuncionarios: TFrmFuncionarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
+        OnClick = btnCancelarClick
       end
       object Label8: TLabel
         Left = 57
@@ -572,6 +603,7 @@ object FrmFuncionarios: TFrmFuncionarios
         Top = 55
         Width = 415
         Height = 21
+        CharCase = ecUpperCase
         TabOrder = 0
       end
       object edtEnd: TEdit
@@ -579,6 +611,7 @@ object FrmFuncionarios: TFrmFuncionarios
         Top = 82
         Width = 415
         Height = 21
+        CharCase = ecUpperCase
         TabOrder = 1
       end
       object edtCpf: TMaskEdit
@@ -586,6 +619,7 @@ object FrmFuncionarios: TFrmFuncionarios
         Top = 109
         Width = 415
         Height = 21
+        CharCase = ecUpperCase
         EditMask = '000.000.000-00;1;_'
         MaxLength = 14
         TabOrder = 2
@@ -596,6 +630,7 @@ object FrmFuncionarios: TFrmFuncionarios
         Top = 136
         Width = 415
         Height = 21
+        CharCase = ecUpperCase
         EditMask = '(00)9 0000 0000;1;_'
         MaxLength = 15
         TabOrder = 3

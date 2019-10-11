@@ -26,9 +26,9 @@ object FrmCargos: TFrmCargos
     ActivePage = TbConsulta
     Align = alClient
     TabOrder = 0
-    OnEnter = PageControl1Enter
     object TbConsulta: TTabSheet
       Caption = 'Consulta'
+      OnShow = TbConsultaShow
       object Label1: TLabel
         Left = 3
         Top = 21
