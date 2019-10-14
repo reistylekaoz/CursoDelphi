@@ -36,6 +36,8 @@ type
     Label8: TLabel;
     edtID: TEdit;
     cmbIDcargo: TComboBox;
+    Label9: TLabel;
+    cmbVend: TComboBox;
     PROCEDUre salvar;
     procedure alterar;
     procedure pesquisar;
@@ -83,7 +85,8 @@ begin
   DMod.QRcon.SQL.Add('CPF = :CPF,');
   DMod.QRcon.SQL.Add('TELEFONE = :TELEFONE,');
   DMod.QRcon.SQL.Add('ENDERECO = :ENDERECO,');
-  DMod.QRcon.SQL.Add('CARGO = :CARGO');
+  DMod.QRcon.SQL.Add('CARGO = :CARGO,');
+  DMod.QRcon.SQL.Add('VENDEDOR = :VENDEDOR');
   DMod.QRcon.SQL.Add('WHERE ID = :ID');
 
   DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
@@ -92,8 +95,16 @@ begin
   DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
   DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
   DMod.QRcon.ParamByName('CARGO').Value := cmbIDcargo.Text;
+  if cmbVend.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'N';
+    end;
   DMod.QRcon.ExecSQL;
-  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, mbOKCancel, 0);
+  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, [mbOK], 0);
   CRUD := 'R';
 
 end;
@@ -109,7 +120,7 @@ procedure TFrmFuncionarios.BtnNovoClick(Sender: TObject);
 begin
   if CRUD <> 'R' then
   BEGIN
-    MessageDlg('Existe um cadastro em aberto', mtWarning, mbOKCancel, 0);
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
     PageControl1.ActivePageIndex := 1;
     edtNome.SetFocus;
     Exit;
@@ -120,6 +131,7 @@ begin
     limparcampos;
     liberarcampos;
     PageControl1.ActivePageIndex := 1;
+    cmbIDcargo.ItemIndex := cmbCargo.ItemIndex;
     edtNome.SetFocus;
     CRUD := 'C';
   end;
@@ -129,7 +141,7 @@ procedure TFrmFuncionarios.BtnSalvarClick(Sender: TObject);
 begin
   if Trim(edtNome.Text) = '' then
   begin
-    MessageDlg('Campo Cargo vázio!!', mtWarning, mbOKCancel, 0);
+    MessageDlg('Campo Cargo vázio!!', mtWarning, [mbOK], 0);
     edtNome.SetFocus;
     Exit;
   end;
@@ -149,17 +161,23 @@ begin
 
   if Trim(id) = '' then
   begin
-    MessageDlg('Nenhum Funcionário Selecionado', mtInformation, mbOKCancel, 0);
+    MessageDlg('Nenhum Funcionário Selecionado', mtInformation, [mbOK], 0);
     Exit;
   end;
 
   // função para deletar o funcionário.
-  DMod.QRcon.SQL.Clear;
-  DMod.QRcon.SQL.Add('delete from funcionarios where id = :id');
-  DMod.QRcon.ParamByName('ID').Value := id;
-  DMod.QRcon.ExecSQL;
-  MessageDlg('Registro deletado com sucesso', mtInformation, mbOKCancel, 0);
-  CRUD := 'R';
+  if MessageDlg('Deseja mesmo excluir esse Registro', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('delete from funcionarios where id = :id');
+    DMod.QRcon.ParamByName('ID').Value := id;
+    DMod.QRcon.ExecSQL;
+    MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
+    CRUD := 'R';
+  end;
+
 end;
 
 procedure TFrmFuncionarios.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
@@ -175,6 +193,7 @@ begin
   PageControl1.ActivePageIndex := 0;
   listarcargos;
   pesquisar;
+  bloquearcampos;
   CRUD := 'R';
   grid.EditorMode := false;
   edtPesquisa.SetFocus;
@@ -193,8 +212,8 @@ begin
   edtEnd.Enabled := true;
   edtCpf.Enabled := true;
   edtFone.Enabled := true;
-  edtID.Enabled := true;
   cmbCargo.Enabled := true;
+  cmbVend.Enabled := true;
 end;
 
 procedure TFrmFuncionarios.bloquearcampos;
@@ -207,6 +226,7 @@ begin
   edtFone.Enabled := false;
   edtID.Enabled := false;
   cmbCargo.Enabled := false;
+  cmbVend.Enabled := false;
 end;
 
 procedure TFrmFuncionarios.limparcampos;
@@ -218,6 +238,7 @@ begin
   edtFone.Text := '';
   edtID.Text := '';
   cmbCargo.ItemIndex := 0;
+  cmbVend.ItemIndex := 0;
 
 end;
 
@@ -263,12 +284,21 @@ begin
     // Inserção do registro na tabela
     DMod.QRcon.SQL.Clear;
     DMod.QRcon.SQL.Add
-      ('INSERT INTO FUNCIONARIOS (NOME, CPF, TELEFONE, ENDERECO, CARGO) VALUES ( :NOME, :CPF, :TELEFONE, :ENDERECO, :CARGO);');
+      ('INSERT INTO FUNCIONARIOS (NOME, CPF, TELEFONE, ENDERECO, CARGO, VENDEDOR) VALUES ( :NOME, :CPF, :TELEFONE, :ENDERECO, :CARGO,:VENDEDOR);');
     DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
     DMod.QRcon.ParamByName('CPF').Value := edtCpf.Text;
     DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
     DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
-    DMod.QRcon.ParamByName('CARGO').AsInteger := StrToInt(cmbIDcargo.Text);
+    DMod.QRcon.ParamByName('CARGO').Value := cmbIDcargo.Text;
+    if cmbVend.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'N';
+    end;
+
     DMod.QRcon.ExecSQL;
 
     // Consulta o ID gerado na tabela e repassa para o edt de ID
@@ -280,7 +310,7 @@ begin
 
     DMod.QRcon.SQL.Clear;
     CRUD := 'R';
-    MessageDlg('Salvo com sucesso', mtInformation, mbOKCancel, 0);
+    MessageDlg('Salvo com sucesso', mtInformation, [mbOK], 0);
   end
   else if CRUD = 'U' then
 
@@ -301,7 +331,7 @@ begin
   // CHECA Se o crud já está em alteração, caso sim, não permite alterar
   if CRUD <> 'R' then
   BEGIN
-    MessageDlg('Existe um cadastro em aberto', mtWarning, mbOKCancel, 0);
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
     PageControl1.ActivePageIndex := 1;
     edtNome.SetFocus;
     Exit;

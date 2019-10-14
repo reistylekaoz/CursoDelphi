@@ -17,12 +17,18 @@ type
     EdtLogin: TEdit;
     BtnLogin: TSpeedButton;
     LblAvisoLogin: TLabel;
+    procedure pesquisarLogin;
+    procedure pesquisarsenha;
+
     procedure centralizarpainel;
     procedure login;
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
       var Resize: Boolean);
     procedure BtnLoginClick(Sender: TObject);
+    procedure EdtLoginExit(Sender: TObject);
+    procedure EdtSenhaEnter(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +42,7 @@ implementation
 
 {$R *.dfm}
 
-uses Menu;
+uses Menu, dmodule;
 
 procedure TFrmLogin.BtnLoginClick(Sender: TObject);
 begin
@@ -45,6 +51,10 @@ begin
           LblAvisoLogin.Caption := 'Digite o usuário!';
           EdtLogin.SetFocus;
           exit;
+        end
+        else
+        begin
+
         end;
 
     if Trim(EdtSenha.Text) = '' then
@@ -52,9 +62,13 @@ begin
         LblAvisoLogin.Caption := 'Digite a Senha!';
           EdtSenha.SetFocus;
           exit;
+    end
+    else
+    begin
+      pesquisarsenha;
     end;
 
-        login;
+
 end;
 
 procedure TFrmLogin.centralizarpainel;
@@ -63,16 +77,34 @@ begin
     PanelImglogin.left := (Self.Width div 2) - 182;
 end;
 
+procedure TFrmLogin.EdtLoginExit(Sender: TObject);
+begin
+pesquisarLogin;
+end;
+
+procedure TFrmLogin.EdtSenhaEnter(Sender: TObject);
+begin
+LblAvisoLogin.Caption := '';
+end;
+
 procedure TFrmLogin.FormCanResize(Sender: TObject; var NewWidth,
   NewHeight: Integer; var Resize: Boolean);
 begin
     centralizarpainel;
 end;
 
-procedure TFrmLogin.FormKeyUp(Sender: TObject; var Key: Word;
+ procedure TFrmLogin.FormKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  LblAvisoLogin.Caption := '';
+   if key = VK_RETURN then
+   begin
+     BtnLogin.Click;
+   end;
+end;
+
+procedure TFrmLogin.FormShow(Sender: TObject);
+begin
+EdtLogin.SetFocus;
 end;
 
 procedure TFrmLogin.login;
@@ -80,6 +112,43 @@ begin
     FrmMenu := TFrmMenu.Create(self);
     FrmMenu.ShowModal;
     LblAvisoLogin.Caption := 'Login Efetuado';
+end;
+
+procedure TFrmLogin.pesquisarLogin;
+begin
+//
+DMod.QRcon.SQL.Clear;
+DMod.QRcon.SQL.Add('select * from usuarios where login = :login');
+DMod.QRcon.ParamByName('login').Value := EdtLogin.Text;
+DMod.QRcon.Open();
+if DMod.QRcon.RecordCount = 0 then
+begin
+  LblAvisoLogin.Caption := 'Usuário não encontrado!!!';
+  EdtLogin.SetFocus;
+end;
+
+end;
+
+procedure TFrmLogin.pesquisarsenha;
+begin
+   //
+
+   DMod.QRcon.SQL.Clear;
+   DMod.QRcon.SQL.Add('select * from usuarios where login = :login and senha = :senha');
+DMod.QRcon.ParamByName('login').Value := EdtLogin.Text;
+DMod.QRcon.ParamByName('senha').Value := EdtSenha.Text;
+DMod.QRcon.Open();
+USUARIOID := DMod.QRcon.FieldByName('id').Value;
+USUARIO := DMod.QRcon.FieldByName('login').Value;
+grupoid := DMod.QRcon.FieldByName('grupo_usuario_id').Value;
+
+if DMod.QRcon.RecordCount = 0 then
+begin
+  LblAvisoLogin.Caption := 'Usuário e senha incorretos!!!';
+  EdtLogin.SetFocus;
+end
+else
+login;
 end;
 
 end.

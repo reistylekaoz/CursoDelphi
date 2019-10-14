@@ -4,24 +4,30 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls;
 
 type
   TFrmMenu = class(TForm)
     MainMenu: TMainMenu;
-    Cadastros1: TMenuItem;
-    Produtos1: TMenuItem;
-    Fornecedores1: TMenuItem;
+    Cadastros: TMenuItem;
+    CadProdutos: TMenuItem;
+    CadFornecedores: TMenuItem;
     Movimentaes1: TMenuItem;
     Relatrios1: TMenuItem;
     Estoque1: TMenuItem;
     Sair1: TMenuItem;
-    Usuarios1: TMenuItem;
-    Funcionarios1: TMenuItem;
-    Cargos1: TMenuItem;
-    procedure Usuarios1Click(Sender: TObject);
-    procedure Funcionarios1Click(Sender: TObject);
-    procedure Cargos1Click(Sender: TObject);
+    CadUsuarios: TMenuItem;
+    CadFuncionarios: TMenuItem;
+    CadCargos: TMenuItem;
+    CadGrupoUsuarios: TMenuItem;
+    DefAcesso: TMenuItem;
+    Label1: TLabel;
+    LblUsuario: TLabel;
+    procedure CadUsuariosClick(Sender: TObject);
+    procedure CadFuncionariosClick(Sender: TObject);
+    procedure CadCargosClick(Sender: TObject);
+    procedure CadGrupoUsuariosClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,24 +41,35 @@ implementation
 
 {$R *.dfm}
 
-uses Usuarios, Funcionarios, Cargos;
+uses Usuarios, Funcionarios, Cargos, GrupoUsuarios, dmodule;
 
-procedure TFrmMenu.Cargos1Click(Sender: TObject);
+procedure TFrmMenu.CadCargosClick(Sender: TObject);
 begin
     FrmCargos := TFrmCargos.Create(self);
     FrmCargos.ShowModal;
 end;
 
-procedure TFrmMenu.Funcionarios1Click(Sender: TObject);
+procedure TFrmMenu.CadFuncionariosClick(Sender: TObject);
 begin
     FrmFuncionarios := TFrmFuncionarios.Create(self);
     FrmFuncionarios.ShowModal;
 end;
 
-procedure TFrmMenu.Usuarios1Click(Sender: TObject);
+procedure TFrmMenu.CadGrupoUsuariosClick(Sender: TObject);
+begin
+    frmGrupoUsuarios := TfrmGrupoUsuarios.Create(self);
+    frmGrupoUsuarios.ShowModal;
+end;
+
+procedure TFrmMenu.CadUsuariosClick(Sender: TObject);
 begin
     FrmUsuarios := TFrmUsuarios.Create(self);
     FrmUsuarios.ShowModal;
+end;
+
+procedure TFrmMenu.FormShow(Sender: TObject);
+begin
+LblUsuario.Caption := USUARIO;
 end;
 
 end.

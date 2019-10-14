@@ -26,6 +26,10 @@ var
   DMod: TDMod;
   ConfigINI : TIniFile;
   caminhoexe : string;
+  USUARIO: STRING;
+  USUARIOID: INTEGER;
+  grupoid: integer;
+
 
 implementation
 

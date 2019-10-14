@@ -67,7 +67,7 @@ begin
   DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
   DMod.QRcon.ParamByName('ID').Value := edtId.Text;
   DMod.QRcon.ExecSQL;
-  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, mbOKCancel, 0);
+  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, [mbOK], 0);
   crud := 'R';
 
 end;
@@ -76,7 +76,7 @@ procedure TFrmCargos.BtnNovoClick(Sender: TObject);
 begin
   if crud <> 'R' then
   BEGIN
-    MessageDlg('Existe um cadastro em aberto', mtWarning, mbOKCancel, 0);
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
     Exit;
   END
   else
@@ -95,7 +95,7 @@ procedure TFrmCargos.BtnSalvarClick(Sender: TObject);
 begin
   if Trim(edtNome.Text) = '' then
   begin
-    MessageDlg('Campo Cargo vázio!!', mtWarning, mbOKCancel, 0);
+    MessageDlg('Campo Cargo vázio!!', mtWarning, [mbOK], 0);
     edtNome.SetFocus;
     Exit;
   end;
@@ -108,16 +108,21 @@ begin
 
   if Trim(id) = '' then
   begin
-    MessageDlg('Nenhum Cargo Selecionado', mtInformation, mbOKCancel, 0);
+    MessageDlg('Nenhum Cargo Selecionado', mtInformation, [mbOK], 0);
     Exit;
   end;
 
-  DMod.QRcon.SQL.Clear;
-  DMod.QRcon.SQL.Add('delete from cargos where id = :id');
-  DMod.QRcon.ParamByName('ID').Value := id;
+   if MessageDlg('Deseja mesmo excluir esse Registro', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+    begin
+        DMod.QRcon.SQL.Clear;
+        DMod.QRcon.SQL.Add('delete from cargos where id = :id');
+      DMod.QRcon.ParamByName('ID').Value := id;
   DMod.QRcon.ExecSQL;
-  MessageDlg('Registro deletado com sucesso', mtInformation, mbOKCancel, 0);
+  MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
   crud := 'R';
+    end;
+
 end;
 
 procedure TFrmCargos.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
@@ -173,7 +178,7 @@ begin
 
     DMod.QRcon.SQL.Clear;
     crud := 'R';
-    MessageDlg('Salvo com sucesso', mtInformation, mbOKCancel, 0);
+    MessageDlg('Salvo com sucesso', mtInformation, [mbOK], 0);
   end
   else if crud = 'U' then
 
@@ -193,7 +198,7 @@ procedure TFrmCargos.BtnAlterarClick(Sender: TObject);
 begin
   if crud <> 'R' then
   BEGIN
-    MessageDlg('Existe um cadastro em aberto', mtWarning, mbOKCancel, 0);
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
     Exit;
   END
   else

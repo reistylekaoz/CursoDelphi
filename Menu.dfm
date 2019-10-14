@@ -2,10 +2,9 @@ object FrmMenu: TFrmMenu
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = 'Menu Principal'
-  ClientHeight = 794
-  ClientWidth = 1083
+  ClientHeight = 430
+  ClientWidth = 689
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,12 +15,43 @@ object FrmMenu: TFrmMenu
   OldCreateOrder = False
   Position = poScreenCenter
   WindowState = wsMaximized
+  OnShow = FormShow
+  DesignSize = (
+    689
+    430)
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 369
+    Width = 72
+    Height = 16
+    Anchors = [akLeft, akBottom]
+    Caption = 'Bem Vindo:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object LblUsuario: TLabel
+    Left = 86
+    Top = 366
+    Width = 5
+    Height = 19
+    Anchors = [akLeft, akBottom]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object MainMenu: TMainMenu
     Left = 40
     Top = 80
-    object Cadastros1: TMenuItem
+    object Cadastros: TMenuItem
       Bitmap.Data = {
         662A0000424D662A00000000000036000000280000003C0000003C0000000100
         180000000000302A0000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -364,23 +394,27 @@ object FrmMenu: TFrmMenu
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
       Caption = 'Cadastros'
-      object Produtos1: TMenuItem
+      object CadProdutos: TMenuItem
         Caption = 'Produtos'
       end
-      object Fornecedores1: TMenuItem
+      object CadFornecedores: TMenuItem
         Caption = 'Fornecedores'
       end
-      object Usuarios1: TMenuItem
+      object CadUsuarios: TMenuItem
         Caption = 'Usuarios'
-        OnClick = Usuarios1Click
+        OnClick = CadUsuariosClick
       end
-      object Funcionarios1: TMenuItem
+      object CadFuncionarios: TMenuItem
         Caption = 'Funcionarios'
-        OnClick = Funcionarios1Click
+        OnClick = CadFuncionariosClick
       end
-      object Cargos1: TMenuItem
+      object CadCargos: TMenuItem
         Caption = 'Cargos'
-        OnClick = Cargos1Click
+        OnClick = CadCargosClick
+      end
+      object CadGrupoUsuarios: TMenuItem
+        Caption = 'Grupo de Usu'#225'rios'
+        OnClick = CadGrupoUsuariosClick
       end
     end
     object Estoque1: TMenuItem
@@ -5008,6 +5042,9 @@ object FrmMenu: TFrmMenu
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Relat'#243'rios'
+    end
+    object DefAcesso: TMenuItem
+      Caption = 'Defini'#231#245'es de Acesso'
     end
     object Sair1: TMenuItem
       Bitmap.Data = {

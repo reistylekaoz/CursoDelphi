@@ -17,13 +17,13 @@ object DMod: TDMod
     IndexFieldNames = 'ID'
     Connection = FDCon
     Left = 136
-    Top = 64
+    Top = 56
   end
   object QRcon: TFDQuery
     Connection = FDCon
     SQL.Strings = (
       '')
     Left = 200
-    Top = 64
+    Top = 56
   end
 end

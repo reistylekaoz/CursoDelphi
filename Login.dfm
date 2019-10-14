@@ -15,6 +15,7 @@ object FrmLogin: TFrmLogin
   WindowState = wsMaximized
   OnCanResize = FormCanResize
   OnKeyUp = FormKeyUp
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PanelLogin: TPanel
@@ -6576,9 +6577,9 @@ object FrmLogin: TFrmLogin
         OnClick = BtnLoginClick
       end
       object LblAvisoLogin: TLabel
-        Left = 210
+        Left = 309
         Top = 263
-        Width = 103
+        Width = 4
         Height = 14
         Alignment = taRightJustify
         Font.Charset = DEFAULT_CHARSET
@@ -6594,6 +6595,7 @@ object FrmLogin: TFrmLogin
         Width = 249
         Height = 20
         BorderStyle = bsNone
+        CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -6602,6 +6604,7 @@ object FrmLogin: TFrmLogin
         ParentFont = False
         PasswordChar = '*'
         TabOrder = 0
+        OnEnter = EdtSenhaEnter
       end
       object EdtLogin: TEdit
         Left = 64
@@ -6609,6 +6612,7 @@ object FrmLogin: TFrmLogin
         Width = 249
         Height = 20
         BorderStyle = bsNone
+        CharCase = ecUpperCase
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -6616,6 +6620,7 @@ object FrmLogin: TFrmLogin
         Font.Style = []
         ParentFont = False
         TabOrder = 1
+        OnExit = EdtLoginExit
       end
     end
   end

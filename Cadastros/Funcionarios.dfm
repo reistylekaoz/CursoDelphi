@@ -30,7 +30,7 @@ object FrmFuncionarios: TFrmFuncionarios
     Top = 0
     Width = 540
     Height = 284
-    ActivePage = tbCadastro
+    ActivePage = TbConsulta
     Align = alClient
     TabOrder = 0
     object TbConsulta: TTabSheet
@@ -598,6 +598,13 @@ object FrmFuncionarios: TFrmFuncionarios
         Alignment = taRightJustify
         Caption = 'ID:'
       end
+      object Label9: TLabel
+        Left = 383
+        Top = 31
+        Width = 51
+        Height = 13
+        Caption = 'Vendedor?'
+      end
       object edtNome: TEdit
         Left = 78
         Top = 55
@@ -661,6 +668,19 @@ object FrmFuncionarios: TFrmFuncionarios
         Enabled = False
         TabOrder = 6
         Visible = False
+      end
+      object cmbVend: TComboBox
+        Left = 440
+        Top = 28
+        Width = 53
+        Height = 21
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 7
+        Text = 'Sim'
+        Items.Strings = (
+          'Sim'
+          'N'#227'o')
       end
     end
   end

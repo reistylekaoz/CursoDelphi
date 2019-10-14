@@ -1,0 +1,307 @@
+unit GrupoUsuarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls;
+
+type
+  TfrmGrupoUsuarios = class(TForm)
+    PageControl1: TPageControl;
+    TbConsulta: TTabSheet;
+    Label1: TLabel;
+    BtnNovo: TSpeedButton;
+    BtnAlterar: TSpeedButton;
+    BtnDeletar: TSpeedButton;
+    edtPesquisa: TEdit;
+    Grid: TDBGrid;
+    tbCadastro: TTabSheet;
+    Label2: TLabel;
+    BtnSalvar: TSpeedButton;
+    Label3: TLabel;
+    BtnCancelar: TSpeedButton;
+    edtNome: TEdit;
+    edtId: TEdit;
+    cmbSuperUsuario: TComboBox;
+    DS: TDataSource;
+    PROCEDUre salvar;
+    procedure alterar;
+    procedure pesquisar;
+    procedure delete(id: String);
+    procedure limparcampos;
+    procedure liberarcampos;
+    procedure bloquearcampos;
+    procedure BtnSalvarClick(Sender: TObject);
+    procedure BtnCancelarClick(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
+    procedure BtnAlterarClick(Sender: TObject);
+    procedure BtnDeletarClick(Sender: TObject);
+    procedure edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure GridDblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGrupoUsuarios: TfrmGrupoUsuarios;
+  CRUD : String;
+
+implementation
+
+{$R *.dfm}
+
+uses dmodule;
+
+{ TfrmGrupoUsuarios }
+
+procedure TfrmGrupoUsuarios.alterar;
+begin
+DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add('update GRUPO_USUARIOS set ');
+  DMod.QRcon.SQL.Add('NOME = :nome,');
+  DMod.QRcon.SQL.Add('SUPER_USUARIO = :SUPER_USUARIO');
+  DMod.QRcon.SQL.Add('WHERE ID = :ID');
+
+  DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+  DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+
+  if cmbSuperUsuario.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('SUPER_USUARIO').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('SUPER_USUARIO').Value := 'N';
+    end;
+  DMod.QRcon.ExecSQL;
+  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, [mbOK], 0);
+  CRUD := 'R';
+end;
+
+procedure TfrmGrupoUsuarios.bloquearcampos;
+begin
+     // bloqueia os edits do formulário
+
+  edtNome.Enabled := false;
+
+  edtID.Enabled := false;
+  cmbSuperUsuario.Enabled := false;
+
+end;
+
+procedure TfrmGrupoUsuarios.BtnAlterarClick(Sender: TObject);
+begin
+// CHECA Se o crud já está em alteração, caso sim, não permite alterar
+  if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  begin
+    // se não estiver em alteração, prepara o formulário para alteração
+    edtID.Text := grid.Columns.Items[0].Field.Text;
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('SELECT * FROM GRUPO_USUARIOS WHERE ID = :ID');
+    DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+    DMod.QRcon.Open();
+    edtNome.Text := DMod.QRcon.FieldByName('NOME').Value;
+
+    if DMod.QRcon.FieldByName('SUPER_USUARIO').Value = 'S' then
+    BEGIN
+      cmbSuperUsuario.ItemIndex := 0;
+
+    END
+    ELSE
+    BEGIN
+      cmbSuperUsuario.ItemIndex := 1;
+    END;
+
+
+    DMod.QRcon.Close;
+
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    CRUD := 'U';
+  end;
+end;
+
+procedure TfrmGrupoUsuarios.BtnCancelarClick(Sender: TObject);
+begin
+PageControl1.ActivePageIndex := 0;
+  edtPesquisa.SetFocus;
+  bloquearcampos;
+  CRUD := 'R';
+end;
+
+procedure TfrmGrupoUsuarios.BtnDeletarClick(Sender: TObject);
+begin
+       CRUD := 'D';
+  delete(grid.Columns.Items[0].Field.Text);
+  pesquisar;
+end;
+
+PROCedure TfrmGrupoUsuarios.BtnNovoClick(Sender: TObject);
+begin
+if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  begin
+
+    limparcampos;
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    CRUD := 'C';
+  end;
+end;
+
+procedure TfrmGrupoUsuarios.BtnSalvarClick(Sender: TObject);
+begin
+     if Trim(edtNome.Text) = '' then
+  begin
+    MessageDlg('Campo Cargo vázio!!', mtWarning, [mbOK], 0);
+    edtNome.SetFocus;
+    Exit;
+  end;
+  salvar;
+  bloquearcampos;
+end;
+
+procedure TfrmGrupoUsuarios.delete(id: String);
+begin
+       // função que checa se o edit funcionário foi preenchido
+
+  if Trim(id) = '' then
+  begin
+    MessageDlg('Nenhum Registro Selecionado!!', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  // função para deletar o funcionário.
+  if MessageDlg('Deseja mesmo excluir esse Registro', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('delete from grupo_usuarios where id = :id');
+    DMod.QRcon.ParamByName('ID').Value := id;
+    DMod.QRcon.ExecSQL;
+    MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
+    CRUD := 'R';
+  end;
+end;
+
+procedure TfrmGrupoUsuarios.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+pesquisar;
+end;
+
+procedure TfrmGrupoUsuarios.FormShow(Sender: TObject);
+begin
+  // quando abre o formulário, o pagecontrol é colocado na primeira página e o crud é coloca no modo de visualização.
+
+  PageControl1.ActivePageIndex := 0;
+  pesquisar;
+  bloquearcampos;
+  CRUD := 'R';
+  grid.EditorMode := false;
+  edtPesquisa.SetFocus;
+end;
+
+procedure TfrmGrupoUsuarios.GridDblClick(Sender: TObject);
+begin
+btnAlterar.Click;
+end;
+
+procedure TfrmGrupoUsuarios.liberarcampos;
+begin
+       // habilita os edits do formulário
+  edtNome.Enabled := true;
+
+  cmbSuperUsuario.Enabled := true;
+
+end;
+
+procedure TfrmGrupoUsuarios.limparcampos;
+begin
+       // limpa os edits do formulário
+  edtNome.Text := '';
+  edtID.Text := '';
+  cmbSuperUsuario.ItemIndex := 0;
+
+end;
+
+
+
+procedure TfrmGrupoUsuarios.pesquisar;
+begin
+     // pesquisa o funcionário, baseado pelo campo pesquisa
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select * from GRUPO_USUARIOS  ');
+  DMod.QRcon.SQL.Add(' where nome containing :pesquisa order by id');
+  DMod.QRcon.ParamByName('pesquisa').Value := edtPesquisa.Text;
+  DMod.QRcon.Open;
+  grid.Columns[0].FieldName := 'ID';
+  grid.Columns[1].FieldName := 'NOME';
+  grid.Columns[2].FieldName := 'SUPER_USUARIO';
+
+end;
+
+procedure TfrmGrupoUsuarios.salvar;
+begin
+     if CRUD = 'C' then
+
+  begin
+    // Inserção do registro na tabela
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('INSERT INTO GRUPO_USUARIOS (NOME, SUPER_USUARIO) VALUES ( :NOME, :SUPER_USUARIO);');
+    DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+
+    if cmbSuperUsuario.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('SUPER_USUARIO').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('SUPER_USUARIO').Value := 'N';
+    end;
+
+    DMod.QRcon.ExecSQL;
+
+    // Consulta o ID gerado na tabela e repassa para o edt de ID
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('select id from GRUPO_USUARIOS where id = (select max(id) from GRUPO_USUARIOS)');
+    DMod.QRcon.Open;
+    edtID.Text := DMod.QRcon.FieldByName('ID').Value;
+
+    DMod.QRcon.SQL.Clear;
+    CRUD := 'R';
+    MessageDlg('Salvo com sucesso', mtInformation, [mbOK], 0);
+  end
+  else if CRUD = 'U' then
+
+  begin
+    alterar;
+  end;
+end;
+
+end.
