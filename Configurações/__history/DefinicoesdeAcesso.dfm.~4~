@@ -1,0 +1,26 @@
+object frmDefinicoes: TfrmDefinicoes
+  Left = 0
+  Top = 0
+  Caption = 'Defini'#231#245'es de acesso'
+  ClientHeight = 354
+  ClientWidth = 544
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object PopupMenu1: TPopupMenu
+    Left = 136
+    Top = 88
+    object Cadastros: TMenuItem
+      Caption = 'Cadastros'
+    end
+    object CadProdutos: TMenuItem
+      Caption = 'Produtos'
+    end
+  end
+end

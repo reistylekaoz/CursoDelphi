@@ -109,6 +109,10 @@ end;
 
 procedure TFrmLogin.login;
 begin
+    USUARIOID := DMod.QRcon.FieldByName('id').AsInteger;
+USUARIO := DMod.QRcon.FieldByName('login').Value;
+grupoid := DMod.QRcon.FieldByName('grupo_usuario_id').AsInteger;
+superusuario := DMod.QRcon.FieldByName('super_usuario').Value;
     FrmMenu := TFrmMenu.Create(self);
     FrmMenu.ShowModal;
     LblAvisoLogin.Caption := 'Login Efetuado';
@@ -133,14 +137,11 @@ procedure TFrmLogin.pesquisarsenha;
 begin
    //
 
-   DMod.QRcon.SQL.Clear;
-   DMod.QRcon.SQL.Add('select * from usuarios where login = :login and senha = :senha');
+DMod.QRcon.SQL.Clear;
+DMod.QRcon.SQL.Add('select u.id, u.senha, u.login, u.grupo_usuario_id, g.super_usuario from usuarios u left join grupo_usuarios g on(u.grupo_usuario_id = g.id) where login = :login and senha = :senha');
 DMod.QRcon.ParamByName('login').Value := EdtLogin.Text;
 DMod.QRcon.ParamByName('senha').Value := EdtSenha.Text;
 DMod.QRcon.Open();
-USUARIOID := DMod.QRcon.FieldByName('id').Value;
-USUARIO := DMod.QRcon.FieldByName('login').Value;
-grupoid := DMod.QRcon.FieldByName('grupo_usuario_id').Value;
 
 if DMod.QRcon.RecordCount = 0 then
 begin
@@ -148,6 +149,7 @@ begin
   EdtLogin.SetFocus;
 end
 else
+
 login;
 end;
 

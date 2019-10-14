@@ -396,24 +396,30 @@ object FrmMenu: TFrmMenu
       Caption = 'Cadastros'
       object CadProdutos: TMenuItem
         Caption = 'Produtos'
+        Enabled = False
       end
       object CadFornecedores: TMenuItem
         Caption = 'Fornecedores'
+        Enabled = False
       end
       object CadUsuarios: TMenuItem
         Caption = 'Usuarios'
+        Enabled = False
         OnClick = CadUsuariosClick
       end
       object CadFuncionarios: TMenuItem
         Caption = 'Funcionarios'
+        Enabled = False
         OnClick = CadFuncionariosClick
       end
       object CadCargos: TMenuItem
         Caption = 'Cargos'
+        Enabled = False
         OnClick = CadCargosClick
       end
       object CadGrupoUsuarios: TMenuItem
         Caption = 'Grupo de Usu'#225'rios'
+        Enabled = False
         OnClick = CadGrupoUsuariosClick
       end
     end
@@ -5043,8 +5049,12 @@ object FrmMenu: TFrmMenu
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Relat'#243'rios'
     end
-    object DefAcesso: TMenuItem
-      Caption = 'Defini'#231#245'es de Acesso'
+    object Config: TMenuItem
+      Caption = 'Configura'#231#245'es'
+      object ConfDefAcesso: TMenuItem
+        Caption = 'Defini'#231#245'es de Acesso'
+        OnClick = ConfDefAcessoClick
+      end
     end
     object Sair1: TMenuItem
       Bitmap.Data = {

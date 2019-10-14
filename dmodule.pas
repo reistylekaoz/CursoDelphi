@@ -27,8 +27,9 @@ var
   ConfigINI : TIniFile;
   caminhoexe : string;
   USUARIO: STRING;
-  USUARIOID: INTEGER;
-  grupoid: integer;
+  USUARIOID: Integer;
+  grupoid: Integer;
+  superusuario: string;
 
 
 implementation

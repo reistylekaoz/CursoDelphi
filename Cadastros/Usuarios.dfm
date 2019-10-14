@@ -12,8 +12,10 @@ object FrmUsuarios: TFrmUsuarios
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
+  OnKeyUp = FormKeyUp
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -33,13 +35,11 @@ object FrmUsuarios: TFrmUsuarios
     ActivePage = tbCadastro
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = -4
-    ExplicitTop = -10
-    ExplicitWidth = 540
-    ExplicitHeight = 284
     object TbConsulta: TTabSheet
       Caption = 'Consulta'
       OnShow = TbConsultaShow
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 532
       ExplicitHeight = 256
       object Label1: TLabel
@@ -376,8 +376,6 @@ object FrmUsuarios: TFrmUsuarios
     object tbCadastro: TTabSheet
       Caption = 'Cadastro'
       ImageIndex = 1
-      ExplicitLeft = 8
-      ExplicitTop = 28
       object Label2: TLabel
         Left = 51
         Top = 58

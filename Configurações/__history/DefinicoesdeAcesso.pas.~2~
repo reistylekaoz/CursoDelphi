@@ -1,0 +1,38 @@
+unit DefinicoesdeAcesso;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus;
+
+type
+  TfrmDefinicoes = class(TForm)
+    MainMenu: TMainMenu;
+    Cadastros: TMenuItem;
+    CadProdutos: TMenuItem;
+    CadFornecedores: TMenuItem;
+    CadUsuarios: TMenuItem;
+    CadFuncionarios: TMenuItem;
+    CadCargos: TMenuItem;
+    CadGrupoUsuarios: TMenuItem;
+    Estoque1: TMenuItem;
+    Movimentaes1: TMenuItem;
+    Relatrios1: TMenuItem;
+    Config: TMenuItem;
+    ConfDefAcesso: TMenuItem;
+    Sair1: TMenuItem;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDefinicoes: TfrmDefinicoes;
+
+implementation
+
+{$R *.dfm}
+
+end.

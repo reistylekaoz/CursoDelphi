@@ -43,6 +43,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure GridDblClick(Sender: TObject);
     procedure TbConsultaShow(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -211,6 +212,13 @@ procedure TfrmGrupoUsuarios.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
 pesquisar;
+end;
+
+procedure TfrmGrupoUsuarios.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if key = VK_ESCAPE then
+      Self.close;
 end;
 
 procedure TfrmGrupoUsuarios.FormShow(Sender: TObject);

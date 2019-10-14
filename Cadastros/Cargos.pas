@@ -41,6 +41,7 @@ type
     procedure BtnDeletarClick(Sender: TObject);
     procedure BtnCancelarClick(Sender: TObject);
     procedure TbConsultaShow(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -129,6 +130,15 @@ procedure TFrmCargos.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   pesquisar;
+end;
+
+
+
+procedure TFrmCargos.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      if key = VK_ESCAPE then
+      Self.close;
 end;
 
 procedure TFrmCargos.FormShow(Sender: TObject);
