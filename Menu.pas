@@ -13,9 +13,9 @@ type
     Cadastros: TMenuItem;
     CadProdutos: TMenuItem;
     CadFornecedores: TMenuItem;
-    Movimentaes1: TMenuItem;
-    Relatrios1: TMenuItem;
-    Estoque1: TMenuItem;
+    Movimentacoes: TMenuItem;
+    Relatorios: TMenuItem;
+    Estoque: TMenuItem;
     Sair1: TMenuItem;
     CadUsuarios: TMenuItem;
     CadFuncionarios: TMenuItem;

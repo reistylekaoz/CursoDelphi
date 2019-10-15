@@ -25,9 +25,9 @@
     <Transaction>2019/10/14 11:04:15.000.323,=D:\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
     <Transaction>2019/10/14 11:05:16.000.213,D:\WS\CursoDelphi\CursoDelphi\Unit1.pas=D:\WS\CursoDelphi\CursoDelphi\Cadastros\GrupoUsuarios.pas</Transaction>
     <Transaction>2019/10/14 11:05:16.000.213,D:\WS\CursoDelphi\CursoDelphi\Unit1.dfm=D:\WS\CursoDelphi\CursoDelphi\Cadastros\GrupoUsuarios.dfm</Transaction>
-    <Transaction>2019/10/14 17:07:12.337,=D:\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
-    <Transaction>2019/10/14 17:08:26.790,D:\WS\CursoDelphi\CursoDelphi\Configurações\DefinicoesdeAcesso.dfm=D:\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
-    <Transaction>2019/10/14 17:08:26.790,D:\WS\CursoDelphi\CursoDelphi\Configurações\DefinicoesdeAcesso.pas=D:\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
+    <Transaction>2019/10/14 17:07:12.000.337,=D:\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
+    <Transaction>2019/10/14 17:08:26.000.790,D:\WS\CursoDelphi\CursoDelphi\Configurações\DefinicoesdeAcesso.dfm=D:\WS\CursoDelphi\CursoDelphi\Unit1.dfm</Transaction>
+    <Transaction>2019/10/14 17:08:26.000.790,D:\WS\CursoDelphi\CursoDelphi\Configurações\DefinicoesdeAcesso.pas=D:\WS\CursoDelphi\CursoDelphi\Unit1.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Cadastros"/>

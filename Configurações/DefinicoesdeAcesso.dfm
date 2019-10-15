@@ -3,7 +3,7 @@ object frmDefinicoes: TfrmDefinicoes
   Top = 0
   Caption = 'Defini'#231#245'es de acesso'
   ClientHeight = 334
-  ClientWidth = 544
+  ClientWidth = 712
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,9 +14,45 @@ object frmDefinicoes: TfrmDefinicoes
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object btnSalvar: TSpeedButton
+    Left = 633
+    Top = 291
+    Width = 71
+    Height = 35
+    Caption = 'Salvar'
+  end
+  object btnListar: TSpeedButton
+    Left = 616
+    Top = 35
+    Width = 88
+    Height = 35
+    Caption = 'Listar Fun'#231#245'es'
+    OnClick = btnListarClick
+  end
+  object PanelGrp: TCategoryPanelGroup
+    Left = 0
+    Top = 0
+    Width = 409
+    Height = 334
+    VertScrollBar.Tracking = True
+    Align = alCustom
+    HeaderFont.Charset = DEFAULT_CHARSET
+    HeaderFont.Color = clWindowText
+    HeaderFont.Height = -11
+    HeaderFont.Name = 'Tahoma'
+    HeaderFont.Style = []
+    TabOrder = 0
+  end
+  object edtPesquisa: TEdit
+    Left = 415
+    Top = 8
+    Width = 289
+    Height = 21
+    TabOrder = 1
+  end
   object MainMenu: TMainMenu
-    Left = 40
-    Top = 80
+    Left = 64
+    Top = 40
     object Cadastros: TMenuItem
       Bitmap.Data = {
         662A0000424D662A00000000000036000000280000003C0000003C0000000100
@@ -362,7 +398,6 @@ object frmDefinicoes: TfrmDefinicoes
       Caption = 'Cadastros'
       object CadProdutos: TMenuItem
         Caption = 'Produtos'
-        OnClick = CadProdutosClick
       end
       object CadFornecedores: TMenuItem
         Caption = 'Fornecedores'
@@ -380,7 +415,7 @@ object frmDefinicoes: TfrmDefinicoes
         Caption = 'Grupo de Usu'#225'rios'
       end
     end
-    object Estoque1: TMenuItem
+    object Estoque: TMenuItem
       Bitmap.Data = {
         36400000424D3640000000000000360000002800000040000000400000000100
         20000000000000400000120B0000120B00000000000000000000FFFFFF00FFFF
@@ -897,8 +932,11 @@ object frmDefinicoes: TfrmDefinicoes
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Estoque'
+      object OutrasEntradas1: TMenuItem
+        Caption = 'Outras Entradas'
+      end
     end
-    object Movimentaes1: TMenuItem
+    object Movimentacoes: TMenuItem
       Bitmap.Data = {
         36000100424D3600010000000000360000002800000080000000800000000100
         20000000000000000100120B0000120B00000000000000000000FFFFFF00FFFF
@@ -2952,7 +2990,7 @@ object frmDefinicoes: TfrmDefinicoes
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Movimenta'#231#245'es'
     end
-    object Relatrios1: TMenuItem
+    object Relatorios: TMenuItem
       Bitmap.Data = {
         36000100424D3600010000000000360000002800000080000000800000000100
         20000000000000000100120B0000120B00000000000000000000FFFFFF00FFFF

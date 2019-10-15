@@ -1,0 +1,111 @@
+unit DefinicoesdeAcesso;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfrmDefinicoes = class(TForm)
+    MainMenu: TMainMenu;
+    Cadastros: TMenuItem;
+    CadProdutos: TMenuItem;
+    CadFornecedores: TMenuItem;
+    CadUsuarios: TMenuItem;
+    CadFuncionarios: TMenuItem;
+    CadCargos: TMenuItem;
+    CadGrupoUsuarios: TMenuItem;
+    Estoque: TMenuItem;
+    Movimentacoes: TMenuItem;
+    Relatorios: TMenuItem;
+    Config: TMenuItem;
+    ConfDefAcesso: TMenuItem;
+    Sair1: TMenuItem;
+    PanelGrp: TCategoryPanelGroup;
+    procedure listarfuncoes;
+    procedure FormShow(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDefinicoes: TfrmDefinicoes;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmDefinicoes.FormShow(Sender: TObject);
+begin
+  listarfuncoes;
+end;
+
+procedure TfrmDefinicoes.listarfuncoes;
+
+var
+  i: integer;
+  j: integer;
+  LPanel: TCategoryPanel;
+  LabelFunc: TLabel;
+  toplb: integer;
+  CheckInsere: TCheckBox;
+  CheckAltera: TCheckBox;
+  CheckExcluir: TCheckBox;
+
+begin
+  for i := 0 to Menu.Items.Count - 2 do
+  begin
+
+    LPanel := TCategoryPanel.Create(PanelGrp);
+    LPanel.Caption := menu.Items[i].Caption;
+    LPanel.Name := 'Panel'+(Menu.Items[i].Name);
+    LPanel.PanelGroup := PanelGrp;
+    LPanel.Collapsed := True;
+    toplb := 0;
+
+    for j := 0 to Menu.Items[i].Count - 1 do
+
+
+    begin
+
+         LabelFunc := TLabel.Create(self);
+         LabelFunc.Parent := LPanel;
+         LabelFunc.Caption := Menu.Items[i].Items[j].Caption;
+         LabelFunc.Name := 'Label'+(menu.Items[i].Items[j].Name);
+         LabelFunc.Top := toplb;
+
+
+         CheckInsere := TCheckBox.Create(self);
+         CheckInsere.Caption := 'Inserir';
+         CheckInsere.Name :=  'chkInsere'+Menu.Items[i].Items[j].Name;
+         CheckInsere.Parent := LPanel;
+         CheckInsere.Top := toplb;
+         CheckInsere.left := 136;
+
+         CheckAltera := TCheckBox.Create(self);
+         CheckAltera.Caption := 'Alterar';
+         CheckAltera.Name :=  'chkAlterar'+Menu.Items[i].Items[j].Name;
+         CheckAltera.Parent := LPanel;
+         CheckAltera.Top := toplb;
+         CheckAltera.left := 232;
+
+         CheckExcluir := TCheckBox.Create(self);
+         CheckExcluir.Caption := 'Excluir';
+         CheckExcluir.Name :=  'chkExcluir'+Menu.Items[i].Items[j].Name;
+         CheckExcluir.Parent := LPanel;
+         CheckExcluir.Top := toplb;
+         CheckExcluir.left := 328;
+
+
+         toplb := toplb + 20;
+    end;
+
+  end;
+end;
+
+end.

@@ -40,7 +40,7 @@ implementation
 
 procedure TDMod.DataModuleCreate(Sender: TObject);
 begin
-caminhoexe := extractfiledir(getcurrentdir);
+    caminhoexe := extractfiledir(getcurrentdir);
      ConfigINI := TIniFile.Create(caminhoexe+'\Debug\Config.ini');
      FDCon.Params.Database :=  ConfigINI.ReadString('Configuracao','Banco','Erro ao conectar no banco de dados!!');
      ConfigINI.Free;
