@@ -21,7 +21,7 @@ object frmGrupoUsuarios: TfrmGrupoUsuarios
     Top = 0
     Width = 556
     Height = 330
-    ActivePage = TbConsulta
+    ActivePage = tbCadastro
     Align = alClient
     TabOrder = 0
     object TbConsulta: TTabSheet
@@ -555,6 +555,13 @@ object frmGrupoUsuarios: TfrmGrupoUsuarios
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
           FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
         OnClick = BtnCancelarClick
+      end
+      object Label4: TLabel
+        Left = 377
+        Top = 98
+        Width = 65
+        Height = 13
+        Caption = 'Adminitrador:'
       end
       object edtNome: TEdit
         Left = 78

@@ -25,6 +25,7 @@ type
     Label1: TLabel;
     LblUsuario: TLabel;
     Config: TMenuItem;
+    EstOutrasEntradas: TMenuItem;
     procedure liberartodasfunc;
     procedure bloqueartodasfunc;
     procedure carregarfuncoes;
@@ -34,6 +35,8 @@ type
     procedure CadGrupoUsuariosClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ConfDefAcessoClick(Sender: TObject);
+    procedure Sair1Click(Sender: TObject);
+    procedure CadFornecedoresClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,7 +50,8 @@ implementation
 
 {$R *.dfm}
 
-uses Usuarios, Funcionarios, Cargos, GrupoUsuarios, dmodule, DefinicoesdeAcesso;
+uses Usuarios, Funcionarios, Cargos, GrupoUsuarios, dmodule, DefinicoesdeAcesso,
+  Fornecedores;
 
 procedure TFrmMenu.bloqueartodasfunc;
 var
@@ -72,6 +76,12 @@ procedure TFrmMenu.CadCargosClick(Sender: TObject);
 begin
   FrmCargos := TFrmCargos.Create(self);
   FrmCargos.ShowModal;
+end;
+
+procedure TFrmMenu.CadFornecedoresClick(Sender: TObject);
+begin
+  frmFornecedores := TfrmFornecedores.Create(self);
+  frmFornecedores.ShowModal;
 end;
 
 procedure TFrmMenu.CadFuncionariosClick(Sender: TObject);
@@ -160,6 +170,12 @@ for i :=  0 to Menu.Items.Count - 1 do
 
     end;
   end;
+
+end;
+
+procedure TFrmMenu.Sair1Click(Sender: TObject);
+begin
+   self.Close;
 
 end;
 

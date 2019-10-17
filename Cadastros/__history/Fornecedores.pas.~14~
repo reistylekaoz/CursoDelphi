@@ -1,0 +1,313 @@
+unit Fornecedores;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Mask,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Buttons, Vcl.ComCtrls;
+
+type
+  TfrmFornecedores = class(TForm)
+    PageControl1: TPageControl;
+    TbConsulta: TTabSheet;
+    Label1: TLabel;
+    BtnNovo: TSpeedButton;
+    btnAlterar: TSpeedButton;
+    BtnDeletar: TSpeedButton;
+    edtPesquisa: TEdit;
+    grid: TDBGrid;
+    tbCadastro: TTabSheet;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    BtnSalvar: TSpeedButton;
+    btnCancelar: TSpeedButton;
+    Label8: TLabel;
+    edtNome: TEdit;
+    edtEnd: TEdit;
+    edtCNPJ: TMaskEdit;
+    edtFone: TMaskEdit;
+    edtID: TEdit;
+    PROCEDUre salvar;
+    procedure alterar;
+    procedure pesquisar;
+    procedure delete(id: String);
+     procedure limparcampos;
+    procedure liberarcampos;
+    procedure bloquearcampos;
+    PROCEDURE checapermissao;
+    procedure FormShow(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
+     procedure BtnNovoClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmFornecedores: TfrmFornecedores;
+  CRUD:STRING;
+implementation
+
+{$R *.dfm}
+
+uses dmodule;
+
+{ TfrmFornecedores }
+
+procedure TfrmFornecedores.alterar;
+begin
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add('update FORNECEDORES set ');
+  DMod.QRcon.SQL.Add('NOME = :nome,');
+  DMod.QRcon.SQL.Add('CNPJ = :CNPJ,');
+  DMod.QRcon.SQL.Add('TELEFONE = :TELEFONE,');
+  DMod.QRcon.SQL.Add('ENDERECO = :ENDERECO,');
+  DMod.QRcon.SQL.Add('WHERE ID = :ID');
+
+  DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+  DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+  DMod.QRcon.ParamByName('CNPJ').Value := edtCNPJ.Text;
+  DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
+  DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
+
+
+  DMod.QRcon.ExecSQL;
+  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, [mbOK], 0);
+  CRUD := 'R';
+end;
+
+procedure TfrmFornecedores.bloquearcampos;
+begin
+// bloqueia os edits do formulário
+
+  edtNome.Enabled := false;
+  edtEnd.Enabled := false;
+  edtCNPJ.Enabled := false;
+  edtFone.Enabled := false;
+  edtID.Enabled := false;
+
+end;
+
+procedure TfrmFornecedores.btnAlterarClick(Sender: TObject);
+begin
+// CHECA Se o crud já está em alteração, caso sim, não permite alterar
+  if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  if btnAlterar.Enabled = true then
+
+  begin
+    // se não estiver em alteração, prepara o formulário para alteração
+    edtID.Text := grid.Columns.Items[0].Field.Text;
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('SELECT * FROM FORNECEDORES WHERE ID = :ID');
+    DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+    DMod.QRcon.Open();
+    edtNome.Text := DMod.QRcon.FieldByName('NOME').Value;
+    edtEnd.Text := DMod.QRcon.FieldByName('ENDERECO').Value;
+    edtCNPJ.Text := DMod.QRcon.FieldByName('CNPJ').Value;
+    edtFone.Text := DMod.QRcon.FieldByName('TELEFONE').Value;
+    DMod.QRcon.Close;
+
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    CRUD := 'U';
+  end;
+end;
+
+procedure TfrmFornecedores.BtnNovoClick(Sender: TObject);
+begin
+     if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  begin
+
+    limparcampos;
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    CRUD := 'C';
+  end;
+end;
+
+procedure TfrmFornecedores.BtnSalvarClick(Sender: TObject);
+begin
+if Trim(edtNome.Text) = '' then
+  begin
+    MessageDlg('Campo Cargo vázio!!', mtWarning, [mbOK], 0);
+    edtNome.SetFocus;
+    Exit;
+  end;
+  salvar;
+  bloquearcampos;
+end;
+
+procedure TfrmFornecedores.checapermissao;
+var
+ins: String;
+Exc: String;
+alt: String;
+begin
+  if superusuario = 'N' then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, g.funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from funcoes_grupo_usuarios g');
+  DMod.QRcon.SQL.Add
+    ('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
+  DMod.QRcon.SQL.Add('left join funcoes f on(g.funcoes_id = f.id)');
+  DMod.QRcon.SQL.Add('where f.nome = :nomefuncao and g.grupo_usuarios_id = :grupo_ID');
+  DMod.QRcon.ParamByName('nomefuncao').Value := 'CADFORNECEDORES';
+  DMod.QRcon.ParamByName('grupo_id').Value := grupoid;
+  DMod.QRcon.open;
+  ins:= DMod.QRcon.FieldByName('Inserir').Value;
+  alt:= DMod.QRcon.FieldByName('Alterar').Value;
+  exc:= DMod.QRcon.FieldByName('Excluir').Value;
+
+  if ins = 'N' then
+  BtnNovo.Enabled := false;
+  if alt = 'N' then
+  BtnAlterar.Enabled := False;
+  if Exc = 'N' then
+  BtnDeletar.Enabled := False;
+  end;
+
+end;
+
+procedure TfrmFornecedores.delete(id: String);
+begin
+ // função que checa se o edit funcionário foi preenchido
+
+  if Trim(id) = '' then
+  begin
+    MessageDlg('Nenhum Funcionário Selecionado', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  // função para deletar o funcionário.
+  if MessageDlg('Deseja mesmo excluir esse Registro', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('delete from FORNECEDORES where id = :id');
+    DMod.QRcon.ParamByName('ID').Value := id;
+    DMod.QRcon.ExecSQL;
+    MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
+    CRUD := 'R';
+  end;
+end;
+
+procedure TfrmFornecedores.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      pesquisar;
+end;
+
+procedure TfrmFornecedores.FormShow(Sender: TObject);
+begin
+// quando abre o formulário, o pagecontrol é colocado na primeira página e o crud é coloca no modo de visualização.
+
+  checapermissao;
+  PageControl1.ActivePageIndex := 0;
+  pesquisar;
+  bloquearcampos;
+  CRUD := 'R';
+  grid.ReadOnly := true;
+  edtPesquisa.SetFocus;
+
+
+  pesquisar;
+end;
+
+procedure TfrmFornecedores.liberarcampos;
+begin
+  // habilita os edits do formulário
+  edtNome.Enabled := true;
+  edtEnd.Enabled := true;
+  edtCNPJ.Enabled := true;
+  edtFone.Enabled := true;
+
+end;
+
+procedure TfrmFornecedores.limparcampos;
+begin
+    //// limpa os edits do formulário
+  edtNome.Text := '';
+  edtEnd.Text := '';
+  edtCNPJ.Text := '';
+  edtFone.Text := '';
+  edtID.Text := '';
+
+end;
+
+procedure TfrmFornecedores.pesquisar;
+begin
+// pesquisa o funcionário, baseado pelo campo pesquisa
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select F.id, F.nome, F.telefone, F.CNPJ  from FORNECEDORES F ');
+  DMod.QRcon.SQL.Add(' where F.nome containing :pesquisa order by id');
+  DMod.QRcon.ParamByName('pesquisa').Value := edtPesquisa.Text;
+  DMod.QRcon.Open;
+  grid.Columns[0].FieldName := 'ID';
+  grid.Columns[1].FieldName := 'NOME';
+  grid.Columns[2].FieldName := 'CNPJ';
+  grid.Columns[3].FieldName := 'TELEFONE';
+end;
+
+procedure TfrmFornecedores.salvar;
+begin
+    if CRUD = 'C' then
+
+  begin
+    // Inserção do registro na tabela
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('INSERT INTO FORNECEDORES (NOME, CNPJ, TELEFONE, ENDERECO) VALUES ( :NOME, :CNPJ, :TELEFONE, :ENDERECO);');
+    DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+    DMod.QRcon.ParamByName('CNPJ').Value := edtCNPJ.Text;
+    DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
+    DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
+
+
+    DMod.QRcon.ExecSQL;
+
+    // Consulta o ID gerado na tabela e repassa para o edt de ID
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('select id from FORNECEDORES where id = (select max(id) from FORNECEDORES)');
+    DMod.QRcon.Open;
+    edtID.Text := DMod.QRcon.FieldByName('ID').Value;
+
+    DMod.QRcon.SQL.Clear;
+    CRUD := 'R';
+    MessageDlg('Salvo com sucesso', mtInformation, [mbOK], 0);
+  end
+  else if CRUD = 'U' then
+
+  begin
+    alterar;
+  end;
+end;
+
+end.

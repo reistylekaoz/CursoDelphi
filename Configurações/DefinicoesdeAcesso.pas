@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Buttons;
+  Vcl.Buttons, Data.DB, Vcl.Grids, Vcl.DBGrids;
 
 type
   TfrmDefinicoes = class(TForm)
@@ -24,14 +24,27 @@ type
     Config: TMenuItem;
     ConfDefAcesso: TMenuItem;
     Sair1: TMenuItem;
-    PanelGrp: TCategoryPanelGroup;
-    OutrasEntradas1: TMenuItem;
+    EstOutrasEntradas: TMenuItem;
     edtPesquisa: TEdit;
     btnSalvar: TSpeedButton;
     btnListar: TSpeedButton;
-
+    PanelGrp: TCategoryPanelGroup;
+    grid: TDBGrid;
+    DS: TDataSource;
+    LblInftitulo: TLabel;
+    LblInf: TLabel;
+    procedure pesquisargrupos;
+    procedure buscafuncoesbanco;
+    procedure deletapainel;
     procedure listarfuncoes;
+    PROCEDURE atualizardados;
+    procedure atualizarfuncoes(GRUPO_USUARIO_ID: String; FUNCOES_ID: String; ALTERAR: STRING; EXCLUIR: STRING; INSERIR: STRING; ENTRAR: STRING);
     procedure btnListarClick(Sender: TObject);
+    procedure CadastrosClick(Sender: TObject);
+    procedure btnSalvarClick(Sender: TObject);
+    procedure edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
 
   private
     { Private declarations }
@@ -41,6 +54,7 @@ type
 
 var
   frmDefinicoes: TfrmDefinicoes;
+  ID_grupo_usuario: String;
 
 implementation
 
@@ -48,9 +62,169 @@ implementation
 
 uses dmodule;
 
+
+
+procedure TfrmDefinicoes.atualizardados;
+var
+i: integer;
+j: integer;
+funcaoid: String;
+exc: String;
+alt: String;
+ins: String;
+ent: String;
+
+begin
+   for i := 0 to Menu.Items.Count - 2 do
+  begin
+
+    for j := 0 to Menu.Items[i].Count - 1 do
+    begin
+      funcaoid := TLabel(FindComponent('LabelID' + (Menu.Items[i].Items[j].Name))).Caption;
+
+      if TCheckBox(FindComponent('chkInsere' + MENU.Items[i].Items[j].Name)).Checked = true then
+      ins := 'S' else ins := 'N';
+      if TCheckBox(FindComponent('chkAlterar' + MENU.Items[i].Items[j].Name)).Checked = true then
+      alt := 'S' else alt := 'N';
+      if TCheckBox(FindComponent('chkExcluir' + MENU.Items[i].Items[j].Name)).Checked = true then
+      exc := 'S' else exc := 'N';
+      if (ins = 'N') AND (ALT = 'N') AND (EXC = 'N') then
+      ent := 'N' else ent := 'S';
+      atualizarfuncoes(ID_grupo_usuario,funcaoid,alt,exc,ins,ent) ;
+    end;
+
+    end;
+end;
+
+procedure TfrmDefinicoes.atualizarfuncoes(GRUPO_USUARIO_ID, FUNCOES_ID, ALTERAR,
+  EXCLUIR, INSERIR, ENTRAR: STRING);
+begin
+  //aqui eu somente atualizo o banco de dados baseado no que foi preenchido, inserindo ou alterando.
+
+  dmod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add('UPDATE OR INSERT INTO funcoes_grupo_usuarios  (GRUPO_USUARIOS_ID, FUNCOES_ID, ALTERAR, EXCLUIR, INSERIR, ENTRAR) values (:GRUPO_USUARIOS_ID ,:FUNCOES_ID, :ALTERAR, :EXCLUIR, :INSERIR, :ENTRAR) MATCHING (grupo_usuarios_iD, FUNCOES_ID)');
+  DMOD.QRcon.ParamByName('GRUPO_USUARIOS_ID').Value := GRUPO_USUARIO_ID;
+  DMod.QRcon.ParamByName('FUNCOES_ID').Value := FUNCOES_ID;
+  DMOD.QRcon.ParamByName('ALTERAR').Value := ALTERAR;
+  DMOD.QRcon.ParamByName('EXCLUIR').Value := EXCLUIR;
+  DMOD.QRcon.ParamByName('INSERIR').Value := INSERIR;
+  DMOD.QRcon.ParamByName('ENTRAR').Value := ENTRAR;
+  DMOD.QRcon.ExecSQL;
+end;
+
 procedure TfrmDefinicoes.btnListarClick(Sender: TObject);
 begin
+  //aqui eu gravo o ID do grupo em uma variável para fácil acesso no futuro.
+
+  ID_grupo_usuario := (grid.Columns.Items[0].Field.Text);
+  LblInf.Caption := (grid.Columns.Items[0].Field.Text) + ' - ' + (grid.Columns.Items[1].Field.Text);
+  LblInftitulo.Visible := true;
+  LblInf.Visible := true;
+
+  ds.Enabled := false;
   listarfuncoes;
+  btnListar.Enabled := false;
+  btnSalvar.Enabled := true;
+
+end;
+
+procedure TfrmDefinicoes.btnSalvarClick(Sender: TObject);
+begin
+  atualizardados;
+  PanelGrp.Visible := false;
+  pesquisargrupos;
+  LblInftitulo.Visible := false;
+  LblInf.Visible := false;
+  btnListar.Enabled := true;
+  btnSalvar.Enabled := false;
+  MessageDlg('Definições Salvas com Sucesso',mtConfirmation,[mbOK],0);
+
+end;
+
+procedure TfrmDefinicoes.buscafuncoesbanco;
+var
+  i: integer;
+
+begin
+  //aqui eu consulto o as funções do grupo de usuários e marco os checkbox de acordo
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, f.id as funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from   funcoes f');
+  DMod.QRcon.SQL.Add
+    ('left join funcoes_grupo_usuarios g on(g.funcoes_id = f.id)');
+  DMod.QRcon.SQL.Add('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
+  DMod.QRcon.SQL.Add('where f.tipo = :tipo and g.grupo_usuarios_id = :grupo_usuarios');
+  DMod.QRcon.ParamByName('tipo').Value := 'S';
+  DMod.QRcon.ParamByName('grupo_usuarios').Value := ID_grupo_usuario;
+  DMod.QRcon.open;
+
+  while not DMod.QRcon.Eof do
+  begin
+    TLabel(FindComponent('LabelID'+DMod.QRcon.FieldByName('nomefuncao').value)).Caption := DMod.QRcon.FieldByName('funcoes_id').Value;
+
+    if DMod.QRcon.FieldByName('entrar').Value = 'S' then
+    begin
+
+      TMenuItem(FindComponent(DMod.QRcon.FieldByName('nomefuncao').Value))
+        .Enabled := True;
+      TMenuItem(FindComponent(DMod.QRcon.FieldByName('nomefuncao').Value))
+        .Visible := True;
+    end;
+    if DMod.QRcon.FieldByName('inserir').Value = 'S' then
+    begin
+
+      TCheckBox(FindComponent('chkInsere' + DMod.QRcon.FieldByName('nomefuncao')
+        .Value)).Checked := True;
+
+
+    end;
+    if DMod.QRcon.FieldByName('alterar').Value = 'S' then
+    begin
+
+      TCheckBox(FindComponent('chkAlterar' + DMod.QRcon.FieldByName
+        ('nomefuncao').Value)).Checked := True;
+
+
+    end;
+    if DMod.QRcon.FieldByName('Excluir').Value = 'S' then
+    begin
+
+      TCheckBox(FindComponent('chkExcluir' + DMod.QRcon.FieldByName
+        ('nomefuncao').Value)).Checked := True;
+
+
+    end;
+     
+
+    DMod.QRcon.Next;
+  end;
+end;
+
+procedure TfrmDefinicoes.CadastrosClick(Sender: TObject);
+begin
+   Cadastros.Checked := not Cadastros.Checked;
+end;
+
+procedure TfrmDefinicoes.deletapainel;
+begin
+  //função que deleta o painel e o cria de novo
+  PanelGrp.Destroy;
+  PanelGrp := TCategoryPanelGroup.Create(self);
+  PanelGrp.Parent := self;
+  PanelGrp.Width := 400;
+
+end;
+
+procedure TfrmDefinicoes.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+   pesquisargrupos;
+
+end;
+
+procedure TfrmDefinicoes.FormShow(Sender: TObject);
+begin
+  pesquisargrupos;
 end;
 
 procedure TfrmDefinicoes.listarfuncoes;
@@ -65,83 +239,88 @@ var
   CheckExcluir: TCheckBox;
   LPanel: TCategoryPanel;
   LabelFunc: TLabel;
-
+  LabelID: TLabel;
+//Função abaixo cria o painel e subpainéis, tudo em tempo de execução
 begin
+  //Deleto o painel e crio ele novamente
+  deletapainel;
+
   for i := 0 to Menu.Items.Count - 2 do
   begin
 
-    Menu.Items[i].Enabled := false;
-    LPanel := TCategoryPanel.Create(PanelGrp);
+    Menu.Items[i].Enabled := Enabled;
+    LPanel := TCategoryPanel.Create(self);
     LPanel.Caption := Menu.Items[i].Caption;
     LPanel.Name := 'Panel' + (Menu.Items[i].Name);
     LPanel.PanelGroup := PanelGrp;
+    LPanel.Parent := PanelGrp;
     LPanel.Collapsed := True;
     toplb := 0;
+
+
 
     for j := 0 to Menu.Items[i].Count - 1 do
 
     begin
       Menu.Items[i].Items[j].Enabled := false;
+      Menu.Items[i].Items[j].Visible := false;
       LabelFunc := TLabel.Create(self);
       LabelFunc.Parent := LPanel;
       LabelFunc.Caption := Menu.Items[i].Items[j].Caption;
       LabelFunc.Name := 'Label' + (Menu.Items[i].Items[j].Name);
       LabelFunc.Top := toplb;
+      LabelFunc.Visible := true;
+
+      LabelID := TLabel.Create(self);
+      LabelID.Parent := LPanel;
+      LabelID.Name := 'LabelID' + (Menu.Items[i].Items[j].Name);
+      LabelID.Caption := '';
+      LabelID.Top := toplb;
+      LabelID.Visible := false;
 
       CheckInsere := TCheckBox.Create(self);
       CheckInsere.Caption := 'Inserir';
       CheckInsere.Name := 'chkInsere' + Menu.Items[i].Items[j].Name;
       CheckInsere.Parent := LPanel;
       CheckInsere.Top := toplb;
-      CheckInsere.left := 136;
+      CheckInsere.left := 120;
 
       CheckAltera := TCheckBox.Create(self);
       CheckAltera.Caption := 'Alterar';
       CheckAltera.Name := 'chkAlterar' + Menu.Items[i].Items[j].Name;
       CheckAltera.Parent := LPanel;
       CheckAltera.Top := toplb;
-      CheckAltera.left := 232;
+      CheckAltera.left := 200;
 
       CheckExcluir := TCheckBox.Create(self);
       CheckExcluir.Caption := 'Excluir';
       CheckExcluir.Name := 'chkExcluir' + Menu.Items[i].Items[j].Name;
       CheckExcluir.Parent := LPanel;
       CheckExcluir.Top := toplb;
-      CheckExcluir.left := 328;
+      CheckExcluir.left := 280;
 
       toplb := toplb + 20;
-
-      DMod.QRcon.SQL.Clear;
-      DMod.QRcon.SQL.Add
-        ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, g.funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from funcoes_grupo_usuarios g');
-      DMod.QRcon.SQL.Add
-        ('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
-      DMod.QRcon.SQL.Add('left join funcoes f on(g.funcoes_id = f.id)');
-      DMod.QRcon.SQL.Add('where g.grupo_usuarios_id = :id');
-      DMod.QRcon.ParamByName('ID').Value := edtPesquisa.Text;
-      DMod.QRcon.open;
-
-      while not DMod.QRcon.Eof do
-      begin
-        if DMod.QRcon.FieldByName('entrar').Value = 'S' then
-        begin
-
-          TMenuItem(FindComponent(DMod.QRcon.FieldByName('nomefuncao').Value))
-            .Enabled := True;
-        end;
-        if DMod.QRcon.FieldByName('inserir').Value = 'S' then
-        begin
-
-
-
-        end;
-
-        DMod.QRcon.Next;
-
-      end;
+    end;
 
     end;
+    buscafuncoesbanco;
   end;
+
+
+
+procedure TfrmDefinicoes.pesquisargrupos;
+begin
+       // pesquisa o grupo de usuário, baseado pelo campo pesquisa
+  DS.Enabled := TRUE;
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select * from GRUPO_USUARIOS  ');
+  DMod.QRcon.SQL.Add(' where nome containing :pesquisa and super_usuario = :super order by id');
+  DMod.QRcon.ParamByName('pesquisa').Value := edtPesquisa.Text;
+  dmod.QRcon.ParamByName('super').Value := 'N';
+  DMod.QRcon.Open;
+  grid.Columns[0].FieldName := 'ID';
+  grid.Columns[1].FieldName := 'NOME';
 end;
 
 end.

@@ -401,6 +401,7 @@ object FrmMenu: TFrmMenu
       object CadFornecedores: TMenuItem
         Caption = 'Fornecedores'
         Enabled = False
+        OnClick = CadFornecedoresClick
       end
       object CadUsuarios: TMenuItem
         Caption = 'Usuarios'
@@ -940,6 +941,9 @@ object FrmMenu: TFrmMenu
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Estoque'
+      object EstOutrasEntradas: TMenuItem
+        Caption = 'Outras Entradas'
+      end
     end
     object Movimentacoes: TMenuItem
       Bitmap.Data = {
@@ -7109,6 +7113,7 @@ object FrmMenu: TFrmMenu
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Sair'
+      OnClick = Sair1Click
     end
   end
 end

@@ -9,7 +9,8 @@ uses
   Cargos in 'Cadastros\Cargos.pas' {FrmCargos},
   dmodule in 'dmodule.pas' {DMod: TDataModule},
   GrupoUsuarios in 'Cadastros\GrupoUsuarios.pas' {frmGrupoUsuarios},
-  DefinicoesdeAcesso in 'Configurações\DefinicoesdeAcesso.pas' {frmDefinicoes};
+  DefinicoesdeAcesso in 'Configurações\DefinicoesdeAcesso.pas' {frmDefinicoes},
+  Fornecedores in 'Cadastros\Fornecedores.pas' {frmFornecedores};
 
 {$R *.res}
 
@@ -20,5 +21,6 @@ begin
   Application.CreateForm(TDMod, DMod);
   Application.CreateForm(TfrmGrupoUsuarios, frmGrupoUsuarios);
   Application.CreateForm(TfrmDefinicoes, frmDefinicoes);
+  Application.CreateForm(TfrmFornecedores, frmFornecedores);
   Application.Run;
 end.

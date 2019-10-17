@@ -1,0 +1,416 @@
+unit Funcionarios;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Vcl.Grids,
+  Vcl.ComCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids, FireDAC.Stan.Param;
+
+type
+  TFrmFuncionarios = class(TForm)
+    PageControl1: TPageControl;
+    TbConsulta: TTabSheet;
+    Label1: TLabel;
+    edtPesquisa: TEdit;
+    tbCadastro: TTabSheet;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    edtNome: TEdit;
+    edtEnd: TEdit;
+    edtCpf: TMaskEdit;
+    edtFone: TMaskEdit;
+    cmbCargo: TComboBox;
+    BtnNovo: TSpeedButton;
+    btnAlterar: TSpeedButton;
+    BtnSalvar: TSpeedButton;
+    BtnDeletar: TSpeedButton;
+    btnCancelar: TSpeedButton;
+    grid: TDBGrid;
+    DS: TDataSource;
+    Label7: TLabel;
+    Label8: TLabel;
+    edtID: TEdit;
+    cmbIDcargo: TComboBox;
+    Label9: TLabel;
+    cmbVend: TComboBox;
+    PROCEDUre salvar;
+    procedure alterar;
+    procedure pesquisar;
+    procedure delete(id: String);
+    procedure listarcargos;
+    procedure limparcampos;
+    procedure liberarcampos;
+    procedure bloquearcampos;
+    PROCEDURE checapermissao;
+    procedure FormShow(Sender: TObject);
+    procedure cmbCargoChange(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure BtnDeletarClick(Sender: TObject);
+    procedure gridDblClick(Sender: TObject);
+    procedure TbConsultaShow(Sender: TObject);
+    procedure FormKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmFuncionarios: TFrmFuncionarios;
+  CRUD: String;
+
+implementation
+
+{$R *.dfm}
+
+uses dmodule;
+
+{ TFrmFuncionarios }
+
+procedure TFrmFuncionarios.alterar;
+begin
+
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add('update funcionarios set ');
+  DMod.QRcon.SQL.Add('NOME = :nome,');
+  DMod.QRcon.SQL.Add('CPF = :CPF,');
+  DMod.QRcon.SQL.Add('TELEFONE = :TELEFONE,');
+  DMod.QRcon.SQL.Add('ENDERECO = :ENDERECO,');
+  DMod.QRcon.SQL.Add('CARGO = :CARGO,');
+  DMod.QRcon.SQL.Add('VENDEDOR = :VENDEDOR');
+  DMod.QRcon.SQL.Add('WHERE ID = :ID');
+
+  DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+  DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+  DMod.QRcon.ParamByName('CPF').Value := edtCpf.Text;
+  DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
+  DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
+  DMod.QRcon.ParamByName('CARGO').Value := cmbIDcargo.Text;
+  if cmbVend.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'N';
+    end;
+  DMod.QRcon.ExecSQL;
+  MessageDlg('Cargos Alterado com Sucesso!', mtInformation, [mbOK], 0);
+  CRUD := 'R';
+
+end;
+
+procedure TFrmFuncionarios.BtnDeletarClick(Sender: TObject);
+begin
+  CRUD := 'D';
+  delete(grid.Columns.Items[0].Field.Text);
+  pesquisar;
+end;
+
+procedure TFrmFuncionarios.BtnNovoClick(Sender: TObject);
+begin
+  if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  begin
+
+    limparcampos;
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    cmbIDcargo.ItemIndex := cmbCargo.ItemIndex;
+    edtNome.SetFocus;
+    CRUD := 'C';
+  end;
+end;
+
+procedure TFrmFuncionarios.BtnSalvarClick(Sender: TObject);
+begin
+  if Trim(edtNome.Text) = '' then
+  begin
+    MessageDlg('Campo Cargo vázio!!', mtWarning, [mbOK], 0);
+    edtNome.SetFocus;
+    Exit;
+  end;
+  salvar;
+  bloquearcampos;
+end;
+
+procedure TFrmFuncionarios.checapermissao;
+var
+ins: String;
+Exc: String;
+alt: String;
+begin
+  if superusuario = 'N' then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, g.funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from funcoes_grupo_usuarios g');
+  DMod.QRcon.SQL.Add
+    ('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
+  DMod.QRcon.SQL.Add('left join funcoes f on(g.funcoes_id = f.id)');
+  DMod.QRcon.SQL.Add('where f.nome = :nomefuncao and g.grupo_usuarios_id = :grupo_ID');
+  DMod.QRcon.ParamByName('nomefuncao').Value := 'CADCARGOS';
+  DMod.QRcon.ParamByName('grupo_id').Value := grupoid;
+  DMod.QRcon.open;
+  ins:= DMod.QRcon.FieldByName('Inserir').Value;
+  alt:= DMod.QRcon.FieldByName('Alterar').Value;
+  exc:= DMod.QRcon.FieldByName('Excluir').Value;
+
+  if ins = 'N' then
+  BtnNovo.Enabled := false;
+  if alt = 'N' then
+  BtnAlterar.Enabled := False;
+  if Exc = 'N' then
+  BtnAlterar.Enabled := False;
+  end;
+end;
+
+procedure TFrmFuncionarios.cmbCargoChange(Sender: TObject);
+begin
+  // Momento McGyver, aqui eu clono o item selecionado no combobox de cargo para o de ID, para conseguir manipular o banco de dados.
+  cmbIDcargo.ItemIndex := cmbCargo.ItemIndex;
+end;
+
+procedure TFrmFuncionarios.delete(id: String);
+begin
+  // função que checa se o edit funcionário foi preenchido
+
+  if Trim(id) = '' then
+  begin
+    MessageDlg('Nenhum Funcionário Selecionado', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  // função para deletar o funcionário.
+  if MessageDlg('Deseja mesmo excluir esse Registro', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('delete from funcionarios where id = :id');
+    DMod.QRcon.ParamByName('ID').Value := id;
+    DMod.QRcon.ExecSQL;
+    MessageDlg('Registro deletado com sucesso', mtInformation, [mbOK], 0);
+    CRUD := 'R';
+  end;
+
+end;
+
+procedure TFrmFuncionarios.edtPesquisaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  pesquisar;
+end;
+
+procedure TFrmFuncionarios.FormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if key = VK_ESCAPE then
+      Self.close;
+end;
+
+procedure TFrmFuncionarios.FormShow(Sender: TObject);
+begin
+  // quando abre o formulário, o pagecontrol é colocado na primeira página e o crud é coloca no modo de visualização.
+
+  checapermissao;
+  PageControl1.ActivePageIndex := 0;
+  listarcargos;
+  pesquisar;
+  bloquearcampos;
+  CRUD := 'R';
+  grid.ReadOnly := true;
+  edtPesquisa.SetFocus;
+
+
+  pesquisar;
+end;
+
+procedure TFrmFuncionarios.gridDblClick(Sender: TObject);
+begin
+  btnAlterar.Click;
+end;
+
+procedure TFrmFuncionarios.liberarcampos;
+begin
+
+  // habilita os edits do formulário
+  edtNome.Enabled := true;
+  edtEnd.Enabled := true;
+  edtCpf.Enabled := true;
+  edtFone.Enabled := true;
+  cmbCargo.Enabled := true;
+  cmbVend.Enabled := true;
+end;
+
+procedure TFrmFuncionarios.bloquearcampos;
+begin
+  // bloqueia os edits do formulário
+
+  edtNome.Enabled := false;
+  edtEnd.Enabled := false;
+  edtCpf.Enabled := false;
+  edtFone.Enabled := false;
+  edtID.Enabled := false;
+  cmbCargo.Enabled := false;
+  cmbVend.Enabled := false;
+end;
+
+procedure TFrmFuncionarios.limparcampos;
+begin
+  // limpa os edits do formulário
+  edtNome.Text := '';
+  edtEnd.Text := '';
+  edtCpf.Text := '';
+  edtFone.Text := '';
+  edtID.Text := '';
+  cmbCargo.ItemIndex := 0;
+  cmbVend.ItemIndex := 0;
+
+end;
+
+procedure TFrmFuncionarios.listarcargos;
+begin
+  // função para inserir os cargos no combobox, criei um cmbbox auxiliar que fica invisivel, só para registrar o ID
+
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add('select id, nome from cargos order by id');
+  DMod.QRcon.Open();
+
+  while not DMod.QRcon.Eof do
+  begin
+    cmbCargo.Items.Add(DMod.QRcon.FieldByName('NOME').Value);
+    cmbIDcargo.Items.Add(DMod.QRcon.FieldByName('id').Value);
+    DMod.QRcon.Next;
+  end;
+end;
+
+procedure TFrmFuncionarios.pesquisar;
+begin
+
+  // pesquisa o funcionário, baseado pelo campo pesquisa
+  DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select F.id, F.nome, F.telefone, C.nome AS cargo from funcionarios F ');
+  DMod.QRcon.SQL.Add('LEFT JOIN CARGOS C ON(F.cargo = C.id)');
+  DMod.QRcon.SQL.Add(' where F.nome containing :pesquisa order by id');
+  DMod.QRcon.ParamByName('pesquisa').Value := edtPesquisa.Text;
+  DMod.QRcon.Open;
+  grid.Columns[0].FieldName := 'ID';
+  grid.Columns[1].FieldName := 'NOME';
+  grid.Columns[2].FieldName := 'TELEFONE';
+  grid.Columns[3].FieldName := 'CARGO';
+
+end;
+
+procedure TFrmFuncionarios.salvar;
+begin
+  if CRUD = 'C' then
+
+  begin
+    // Inserção do registro na tabela
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('INSERT INTO FUNCIONARIOS (NOME, CPF, TELEFONE, ENDERECO, CARGO, VENDEDOR) VALUES ( :NOME, :CPF, :TELEFONE, :ENDERECO, :CARGO,:VENDEDOR);');
+    DMod.QRcon.ParamByName('NOME').Value := edtNome.Text;
+    DMod.QRcon.ParamByName('CPF').Value := edtCpf.Text;
+    DMod.QRcon.ParamByName('TELEFONE').Value := edtFone.Text;
+    DMod.QRcon.ParamByName('ENDERECO').Value := edtEnd.Text;
+    DMod.QRcon.ParamByName('CARGO').Value := cmbIDcargo.Text;
+    if cmbVend.ItemIndex = 0 then
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'S';
+    end
+    else
+    begin
+      DMod.QRcon.ParamByName('VENDEDOR').Value := 'N';
+    end;
+
+    DMod.QRcon.ExecSQL;
+
+    // Consulta o ID gerado na tabela e repassa para o edt de ID
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add
+      ('select id from funcionarios where id = (select max(id) from funcionarios)');
+    DMod.QRcon.Open;
+    edtID.Text := DMod.QRcon.FieldByName('ID').Value;
+
+    DMod.QRcon.SQL.Clear;
+    CRUD := 'R';
+    MessageDlg('Salvo com sucesso', mtInformation, [mbOK], 0);
+  end
+  else if CRUD = 'U' then
+
+  begin
+    alterar;
+  end;
+end;
+
+procedure TFrmFuncionarios.TbConsultaShow(Sender: TObject);
+begin
+  pesquisar;
+  edtPesquisa.SetFocus;
+end;
+
+procedure TFrmFuncionarios.btnAlterarClick(Sender: TObject);
+begin
+
+  // CHECA Se o crud já está em alteração, caso sim, não permite alterar
+  if CRUD <> 'R' then
+  BEGIN
+    MessageDlg('Existe um cadastro em aberto', mtWarning, [mbOK], 0);
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    Exit;
+  END
+  else
+  begin
+    // se não estiver em alteração, prepara o formulário para alteração
+    edtID.Text := grid.Columns.Items[0].Field.Text;
+    DMod.QRcon.SQL.Clear;
+    DMod.QRcon.SQL.Add('SELECT * FROM FUNCIONARIOS WHERE ID = :ID');
+    DMod.QRcon.ParamByName('ID').Value := edtID.Text;
+    DMod.QRcon.Open();
+    edtNome.Text := DMod.QRcon.FieldByName('NOME').Value;
+    edtEnd.Text := DMod.QRcon.FieldByName('ENDERECO').Value;
+    edtCpf.Text := DMod.QRcon.FieldByName('CPF').Value;
+    edtFone.Text := DMod.QRcon.FieldByName('TELEFONE').Value;
+    cmbIDcargo.ItemIndex := cmbIDcargo.Items.IndexOf
+      (DMod.QRcon.FieldByName('CARGO').Value);
+    cmbCargo.ItemIndex := cmbIDcargo.ItemIndex;
+    DMod.QRcon.Close;
+
+    liberarcampos;
+    PageControl1.ActivePageIndex := 1;
+    edtNome.SetFocus;
+    CRUD := 'U';
+  end;
+end;
+
+procedure TFrmFuncionarios.btnCancelarClick(Sender: TObject);
+begin
+  PageControl1.ActivePageIndex := 0;
+  edtPesquisa.SetFocus;
+  bloquearcampos;
+  CRUD := 'R';
+end;
+
+end.

@@ -31,6 +31,7 @@ type
     procedure alterar;
     procedure pesquisar;
     procedure delete(id: String);
+    procedure checapermissao;
     procedure BtnSalvarClick(Sender: TObject);
     procedure BtnAlterarClick(Sender: TObject);
 
@@ -104,6 +105,42 @@ begin
   edtNome.Enabled := false;
 end;
 
+procedure TFrmCargos.checapermissao;
+var
+ins: String;
+Exc: String;
+alt: String;
+begin
+  if superusuario = 'N' then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, g.funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from funcoes_grupo_usuarios g');
+  DMod.QRcon.SQL.Add
+    ('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
+  DMod.QRcon.SQL.Add('left join funcoes f on(g.funcoes_id = f.id)');
+  DMod.QRcon.SQL.Add('where f.nome = :nomefuncao and g.grupo_usuarios_id = :grupo_ID');
+  DMod.QRcon.ParamByName('nomefuncao').Value := 'CADCARGOS';
+  DMod.QRcon.ParamByName('grupo_id').Value := grupoid;
+  DMod.QRcon.open;
+  ins:= DMod.QRcon.FieldByName('Inserir').Value;
+  alt:= DMod.QRcon.FieldByName('Alterar').Value;
+  exc:= DMod.QRcon.FieldByName('Excluir').Value;
+
+  if ins = 'N' then
+  BtnNovo.Enabled := false;
+  if alt = 'N' then
+  BtnAlterar.Enabled := False;
+  if Exc = 'N' then
+  BtnAlterar.Enabled := False;
+  end;
+
+
+
+
+end;
+
 procedure TFrmCargos.delete;
 begin
 
@@ -143,9 +180,11 @@ end;
 
 procedure TFrmCargos.FormShow(Sender: TObject);
 begin
+  checapermissao;
   PageControl1.ActivePageIndex := 0;
-  Grid.EditorMode := false;
+  Grid.ReadOnly := TRUE;
   crud := 'R';
+  pesquisar;
 end;
 
 procedure TFrmCargos.GridDblClick(Sender: TObject);
@@ -212,6 +251,7 @@ begin
     Exit;
   END
   else
+  if BtnAlterar.Enabled = true then
   begin
 
     edtId.Text := Grid.Columns.Items[0].Field.Text;
@@ -220,7 +260,7 @@ begin
     PageControl1.ActivePageIndex := 1;
     edtNome.SetFocus;
     crud := 'U';
-  end;
+  end
 
 end;
 

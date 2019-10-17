@@ -42,6 +42,7 @@ type
     procedure limparcampos;
     procedure liberarcampos;
     procedure bloquearcampos;
+    procedure checapermissao;
     procedure FormShow(Sender: TObject);
     procedure cmbFuncionarioChange(Sender: TObject);
     procedure cmbGrupousuariosChange(Sender: TObject);
@@ -117,6 +118,8 @@ begin
     Exit;
   END
   else
+  if btnAlterar.Enabled = true then
+  
   begin
     // se não estiver em alteração, prepara o formulário para alteração
     edtID.Text := grid.Columns.Items[0].Field.Text;
@@ -190,6 +193,39 @@ begin
   bloquearcampos;
 end;
 
+procedure TFrmUsuarios.checapermissao;
+
+var
+ins: String;
+Exc: String;
+alt: String;
+begin
+  if superusuario = 'N' then
+
+  begin
+    DMod.QRcon.SQL.Clear;
+  DMod.QRcon.SQL.Add
+    ('select g.id, g.grupo_usuarios_id, gu.nome as nomegrupo, g.funcoes_id, f.nome as nomefuncao, g.alterar, g.excluir, g.inserir, g.entrar from funcoes_grupo_usuarios g');
+  DMod.QRcon.SQL.Add
+    ('left join grupo_usuarios gu on(g.grupo_usuarios_id = gu.id)');
+  DMod.QRcon.SQL.Add('left join funcoes f on(g.funcoes_id = f.id)');
+  DMod.QRcon.SQL.Add('where f.nome = :nomefuncao and g.grupo_usuarios_id = :grupo_ID');
+  DMod.QRcon.ParamByName('nomefuncao').Value := 'CADUSUARIOS';
+  DMod.QRcon.ParamByName('grupo_id').Value := grupoid;
+  DMod.QRcon.open;
+  ins:= DMod.QRcon.FieldByName('Inserir').Value;
+  alt:= DMod.QRcon.FieldByName('Alterar').Value;
+  exc:= DMod.QRcon.FieldByName('Excluir').Value;
+
+  if ins = 'N' then
+  BtnNovo.Enabled := false;
+  if alt = 'N' then
+  BtnAlterar.Enabled := False;
+  if Exc = 'N' then
+  BtnDeletar.Enabled := False;
+  end;
+end;
+
 procedure TFrmUsuarios.cmbFuncionarioChange(Sender: TObject);
 begin
 // Momento McGyver, aqui eu clono o item selecionado no combobox de cargo para o de ID, para conseguir manipular o banco de dados.
@@ -243,14 +279,15 @@ end;
 procedure TFrmUsuarios.FormShow(Sender: TObject);
 begin
    // quando abre o formulário, o pagecontrol é colocado na primeira página e o crud é coloca no modo de visualização.
-
+  checapermissao;
   PageControl1.ActivePageIndex := 0;
   listarfuncionariosegrupo;
   pesquisar;
   bloquearcampos;
   CRUD := 'R';
-  grid.EditorMode := false;
+  grid.ReadOnly := true;
   edtPesquisa.SetFocus;
+  pesquisar;
 end;
 
 procedure TFrmUsuarios.gridDblClick(Sender: TObject);

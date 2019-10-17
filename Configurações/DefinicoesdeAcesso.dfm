@@ -1,9 +1,11 @@
 object frmDefinicoes: TfrmDefinicoes
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Defini'#231#245'es de acesso'
-  ClientHeight = 334
-  ClientWidth = 712
+  ClientHeight = 344
+  ClientWidth = 755
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,48 +14,102 @@ object frmDefinicoes: TfrmDefinicoes
   Font.Style = []
   Menu = MainMenu
   OldCreateOrder = False
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object btnSalvar: TSpeedButton
-    Left = 633
+    Left = 649
     Top = 291
-    Width = 71
+    Width = 88
     Height = 35
     Caption = 'Salvar'
+    Enabled = False
+    OnClick = btnSalvarClick
   end
   object btnListar: TSpeedButton
-    Left = 616
-    Top = 35
+    Left = 555
+    Top = 291
     Width = 88
     Height = 35
     Caption = 'Listar Fun'#231#245'es'
     OnClick = btnListarClick
   end
+  object LblInftitulo: TLabel
+    Left = 406
+    Top = 291
+    Width = 67
+    Height = 13
+    Caption = 'Em Altera'#231#227'o:'
+    Visible = False
+  end
+  object LblInf: TLabel
+    Left = 406
+    Top = 310
+    Width = 103
+    Height = 18
+    Caption = 'Em Altera'#231#227'o:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Visible = False
+  end
+  object edtPesquisa: TEdit
+    Left = 406
+    Top = 8
+    Width = 331
+    Height = 21
+    TabOrder = 0
+    OnKeyUp = edtPesquisaKeyUp
+  end
   object PanelGrp: TCategoryPanelGroup
     Left = 0
-    Top = 0
-    Width = 409
-    Height = 334
+    Top = 8
+    Width = 400
+    Height = 326
     VertScrollBar.Tracking = True
-    Align = alCustom
+    Align = alNone
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11
     HeaderFont.Name = 'Tahoma'
     HeaderFont.Style = []
-    TabOrder = 0
-  end
-  object edtPesquisa: TEdit
-    Left = 415
-    Top = 8
-    Width = 289
-    Height = 21
     TabOrder = 1
   end
+  object grid: TDBGrid
+    Left = 406
+    Top = 35
+    Width = 331
+    Height = 250
+    DataSource = DS
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        Title.Caption = 'ID'
+        Visible = True
+      end
+      item
+        Expanded = False
+        Title.Caption = 'Nome do Grupo'
+        Width = 248
+        Visible = True
+      end>
+  end
   object MainMenu: TMainMenu
-    Left = 64
-    Top = 40
+    BiDiMode = bdLeftToRight
+    ParentBiDiMode = False
+    Left = 248
+    Top = 296
     object Cadastros: TMenuItem
+      AutoLineReduction = maManual
       Bitmap.Data = {
         662A0000424D662A00000000000036000000280000003C0000003C0000000100
         180000000000302A0000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -396,26 +452,34 @@ object frmDefinicoes: TfrmDefinicoes
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFF}
       Caption = 'Cadastros'
+      OnClick = CadastrosClick
       object CadProdutos: TMenuItem
         Caption = 'Produtos'
+        Visible = False
       end
       object CadFornecedores: TMenuItem
         Caption = 'Fornecedores'
+        Visible = False
       end
       object CadUsuarios: TMenuItem
         Caption = 'Usuarios'
+        Visible = False
       end
       object CadFuncionarios: TMenuItem
         Caption = 'Funcionarios'
+        Visible = False
       end
       object CadCargos: TMenuItem
         Caption = 'Cargos'
+        Visible = False
       end
       object CadGrupoUsuarios: TMenuItem
         Caption = 'Grupo de Usu'#225'rios'
+        Visible = False
       end
     end
     object Estoque: TMenuItem
+      AutoLineReduction = maManual
       Bitmap.Data = {
         36400000424D3640000000000000360000002800000040000000400000000100
         20000000000000400000120B0000120B00000000000000000000FFFFFF00FFFF
@@ -932,11 +996,13 @@ object frmDefinicoes: TfrmDefinicoes
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Estoque'
-      object OutrasEntradas1: TMenuItem
+      object EstOutrasEntradas: TMenuItem
         Caption = 'Outras Entradas'
+        Visible = False
       end
     end
     object Movimentacoes: TMenuItem
+      AutoLineReduction = maManual
       Bitmap.Data = {
         36000100424D3600010000000000360000002800000080000000800000000100
         20000000000000000100120B0000120B00000000000000000000FFFFFF00FFFF
@@ -2991,6 +3057,7 @@ object frmDefinicoes: TfrmDefinicoes
       Caption = 'Movimenta'#231#245'es'
     end
     object Relatorios: TMenuItem
+      AutoLineReduction = maManual
       Bitmap.Data = {
         36000100424D3600010000000000360000002800000080000000800000000100
         20000000000000000100120B0000120B00000000000000000000FFFFFF00FFFF
@@ -5045,12 +5112,15 @@ object frmDefinicoes: TfrmDefinicoes
       Caption = 'Relat'#243'rios'
     end
     object Config: TMenuItem
+      AutoLineReduction = maManual
       Caption = 'Configura'#231#245'es'
       object ConfDefAcesso: TMenuItem
         Caption = 'Defini'#231#245'es de Acesso'
+        Visible = False
       end
     end
     object Sair1: TMenuItem
+      AutoLineReduction = maManual
       Bitmap.Data = {
         36000100424D3600010000000000360000002800000080000000800000000100
         20000000000000000100120B0000120B00000000000000000000FFFFFF00FFFF
@@ -7104,5 +7174,10 @@ object frmDefinicoes: TfrmDefinicoes
         FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00}
       Caption = 'Sair'
     end
+  end
+  object DS: TDataSource
+    DataSet = DMod.QRcon
+    Left = 336
+    Top = 296
   end
 end

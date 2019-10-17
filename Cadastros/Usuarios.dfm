@@ -32,16 +32,12 @@ object FrmUsuarios: TFrmUsuarios
     Top = 0
     Width = 562
     Height = 270
-    ActivePage = tbCadastro
+    ActivePage = TbConsulta
     Align = alClient
     TabOrder = 0
     object TbConsulta: TTabSheet
       Caption = 'Consulta'
       OnShow = TbConsultaShow
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 532
-      ExplicitHeight = 256
       object Label1: TLabel
         Left = 3
         Top = 21
